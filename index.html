@@ -1094,7 +1094,8 @@ function rGoogle(){const el=$('#gP');if(!el)return;const c=gCfg(),cl=inClaude();
 var LIVE={t:null,u:null};
 function setLive(k,v,src){if(v===null||v===undefined||isNaN(v))return;LIVE[k]={v:+v,at:Date.now(),src}}
 const LK=()=>S.cfg.lk||(S.cfg.lk={});
-const lkVia=id=>{const l=LK()[id];if(l&&l.via)return l.via==='app'?null:l.via;return haCfg().on&&HA.ok?'ha':null};
+const lkReady=v=>v==='ha'?!!(haCfg().on&&HA.ok):v==='pt'?!!(ptCfg().on&&ptCfg().url):v==='mq'?!!(mqCfg().on&&mqCfg().url):false;
+const lkVia=id=>{const l=LK()[id];if(l&&l.via){if(l.via==='app')return null;return lkReady(l.via)?l.via:null}return haCfg().on&&HA.ok?'ha':null};
 const lkUi=id=>{const l=LK()[id];return l&&l.via?l.via:(haCfg().on?'ha':'app')};
 var PT={ok:false,err:'',list:[],at:0,marcas:null};const ptCfg=()=>S.cfg.pt||(S.cfg.pt={url:'',senha:'',on:false});
 async function ptReq(path,opt){const c=ptCfg();if(!c.url||!c.senha)throw new Error('falta o endereço ou a senha da ponte');const o=opt||{};let r;try{r=await fetch(c.url.replace(/\/+$/,'')+path,Object.assign({},o,{headers:Object.assign({'X-Kaya-Senha':c.senha,'Content-Type':'application/json'},o.headers||{})}))}catch(e){throw new Error('não alcancei a ponte (endereço ou internet)')}let j={};try{j=await r.json()}catch(e){}if(r.status===401)throw new Error('senha da ponte incorreta');if(!r.ok)throw new Error(j.erro||('a ponte respondeu '+r.status));return j}
