@@ -2,12 +2,23 @@
   "name": "kaya-ponte",
   "private": true,
   "description": "Kaya Ponte: liga o Kaya às nuvens Tuya, eWeLink e Shelly",
-  "scripts": { "deploy": "wrangler deploy" },
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
   "cloudflare": {
     "bindings": {
-      "KAYA_SENHA": { "description": "Invente uma senha longa. O Kaya pede essa mesma senha em Estufa › Conectar." },
-      "ORIGEM": { "description": "Endereço do app Kaya. Deixe como está." },
-      "KAYA": { "description": "Armazenamento das chaves das marcas e do login eWeLink." }
+      "KAYA_SENHA": {
+        "description": "Invente uma senha longa. O Kaya pede essa mesma senha em Estufa › Conectar."
+      },
+      "ORIGEM": {
+        "description": "Endereço do app Kaya. Deixe como está."
+      },
+      "KAYA": {
+        "description": "Armazenamento das chaves das marcas e do login eWeLink."
+      }
     }
+  },
+  "devDependencies": {
+    "wrangler": "4.153.0"
   }
 }
