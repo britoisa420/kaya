@@ -551,6 +551,35 @@ details.adv>summary::after{content:'+ Mostrar';font:700 .8rem var(--fb);color:va
 details.adv[open]>summary::after{content:'− Esconder'}
 details.adv>summary small{font-weight:500;font-size:.85rem}
 details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
+.gls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.gls .chip{font-size:.85rem;min-height:36px;padding:6px 12px}
+.agl{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.agd{display:flex;flex-direction:column;gap:6px}
+.agd>b{font-weight:800}
+.agi{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(8,16,10,.5);border:1px solid var(--ln);cursor:pointer;font-size:.92rem;line-height:1.35}
+.agi .ic{color:var(--ac);margin-top:1px}
+.agi:focus-visible{outline:2px solid var(--hl)}
+.nul{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.nur{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(8,16,10,.5);border:1px solid var(--ln)}
+.nur span{flex:1;font-weight:700}
+.nur b{font-size:1.15rem;color:var(--ac);font-variant-numeric:tabular-nums}
+table.nut td,table.nut th{white-space:nowrap}
+table.nut input{width:72px;min-height:38px;padding:4px 8px}
+table.nut tr.cur td{background:rgba(126,217,87,.1)}
+.foadd{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:12px;border-radius:16px;background:linear-gradient(135deg,rgba(126,217,87,.14),rgba(8,16,10,.5));border:1px solid var(--ln2)}
+.foadd label.btn{margin:0;color:var(--ink);font:800 .95rem var(--fb);text-transform:none;letter-spacing:0;display:inline-flex;align-items:center}
+.cmp{position:relative;margin-top:12px;border-radius:16px;overflow:hidden;aspect-ratio:1;max-width:100%;background:#000}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cmpA{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}
+.cmpBar{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;pointer-events:none}
+.cmp input[type=range]{position:absolute;left:0;right:0;bottom:8px;width:100%}
+.cmpL,.cmpR{position:absolute;top:10px;padding:3px 10px;border-radius:999px;background:rgba(0,0,0,.6);font-weight:800;font-size:.8rem}
+.cmpL{left:10px}.cmpR{right:10px}
+#foTl{width:100%;max-width:100%;aspect-ratio:1;border-radius:16px;margin-top:12px;background:#0b120d;display:block}
+.fog{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fog figure{margin:0;border-radius:14px;overflow:hidden;background:rgba(8,16,10,.5);border:1px solid var(--ln)}
+.fog img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.fog figcaption{padding:8px 10px;font-size:.85rem}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -565,7 +594,9 @@ details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
 <h2 id="hi2" style="margin:4px 0 12px"></h2><p id="hiD"></p>
 <div class="asst"><form id="asF" autocomplete="off"><button type="button" class="asMic" id="asMic" aria-label="Falar um comando" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button><input id="asIn" placeholder="Diga ou digite: liga o exaustor" aria-label="Comando para o Kaya" enterkeyhint="send"><button class="asGo" aria-label="Enviar comando"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form><div id="asOut" aria-live="polite"></div></div>
 <div class="panel" id="fp" hidden></div>
+<div class="panel" id="guiaP" hidden></div>
 <div class="panel" id="today" hidden></div>
+<div class="panel" id="agP" hidden></div>
 <div class="panel" id="nowP"></div>
 <div class="panel" id="devP"><div class="row spread"><h3>Aparelhos</h3><span class="fut">Painel</span></div><div id="devs" style="margin-top:12px"></div></div>
 <div class="panel" id="regaP" hidden></div>
@@ -573,7 +604,7 @@ details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
 <div class="panel" hidden><h3>Plantas</h3><div id="homePl" style="margin-top:10px"></div></div>
 </section>
 <section id="v2" hidden>
-<div class='seg' data-g='P'><button data-p='pl' aria-pressed='true'>Plantas</button><button data-p='cl' aria-pressed='false'>Clones</button></div>
+<div class='seg' data-g='P'><button data-p='pl' aria-pressed='true'>Plantas</button><button data-p='nu' aria-pressed='false'>Nutrição e pH</button><button data-p='cl' aria-pressed='false'>Clones</button></div>
 <div class='sp' data-g='P' data-p='pl'>
 <div class="panel"><h3 id="hi">Minhas plantas</h3><div class="pgrid" id="plants" style="margin-top:10px"></div>
 <details id="add" style="margin-top:10px"><summary class="muted" style="cursor:pointer">+ Nova planta e sementes</summary>
@@ -592,7 +623,7 @@ details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
 <div class="panel"><details id="rg" open><summary><b id="ft"></b></summary><div class="g2" id="fm"></div><small class="muted" id="wh"></small><label for="en">Anotações</label><textarea id="en" rows="2" placeholder="Rega, nutrientes, poda, observações"></textarea><label for="ef">Foto</label><input type="file" id="ef" accept="image/*"><div class="row" style="margin-top:10px"><button class="btn" id="addE">Salvar registro</button></div></details></div>
 <div class="panel"><h3 id="lt"></h3><div id="log"></div></div>
 </div>
-</div><div class='sp' data-g='P' data-p='cl' hidden><div class='panel'><h3>Novo lote de clones</h3>
+</div><div class='sp' data-g='P' data-p='nu' hidden><div id='nuV'></div></div><div class='sp' data-g='P' data-p='cl' hidden><div class='panel'><h3>Novo lote de clones</h3>
 <p class='muted' style='margin:6px 0 0'>Siga o passo a passo do guia de clonagem da Leds Indoor e acompanhe o enraizamento até virar planta.</p>
 <div class='g2'><div><label for='clM'>Planta-mãe</label><select id='clM'></select></div><div><label for='clMN'>Nome, se não cadastrada</label><input id='clMN'></div><div><label for='clD'>Data do corte</label><input type='date' id='clD' data-maxd></div><div><label for='clQ'>Estacas</label><input type='number' id='clQ' min='1' value='4'></div><div><label for='clMeio'>Meio de enraizamento</label><select id='clMeio'><option>Esponja de enraizamento</option><option>Lã de rocha</option><option>Jiffy</option><option>Outro</option></select></div><div><label for='clN'>Anotações</label><input id='clN'></div></div>
 <label class='ck'><input type='checkbox' id='clH' checked> Vou usar hormônio enraizador</label>
@@ -665,6 +696,7 @@ details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
 <section id="v4" hidden>
 <div class='seg' data-g='M'><button data-p='cards' aria-pressed='true'>Cards</button><button data-p='backup' aria-pressed='false'>Backup</button><button data-p='fontes' aria-pressed='false'>Fontes</button><button data-p='perfil' aria-pressed='false'>Perfil</button><button data-p='sobre' aria-pressed='false'>Sobre</button></div>
 <div class='sp' data-g='M' data-p='perfil' hidden>
+<div class='panel' id='modoP'></div>
 <div class='panel' id='gP'></div>
 <div class='panel'><h3>Perfil</h3><div class='g2'><div><label for='pfN'>Nome</label><input id='pfN'></div><div><label for='pfC'>Cidade</label><input id='pfC' placeholder='Ex.: Curitiba'></div></div><p class='muted' style='margin:8px 0'>A cidade vem preenchida no formulário de previsão, em Estufa › Clima. O Kaya não busca o tempo sozinho: você informa a previsão copiando de um app ou site de clima.</p><div class='row'><button class='btn' id='pfS'>Salvar perfil</button></div></div>
 <div class='panel'><h3>PIN de acesso</h3><p class='muted' id='pinS' style='margin:6px 0'></p><div id='pinF'></div></div>
@@ -716,7 +748,7 @@ details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
 </div>
 </section>
 <section id="v5" hidden>
-<div class='seg' data-g='H'><button data-p='gal' aria-pressed='true'>Galeria</button><button data-p='graf' aria-pressed='false'>Gráficos</button><button data-p='comp' aria-pressed='false'>Comparar</button><button data-p='rel' aria-pressed='false'>Relatório</button></div>
+<div class='seg' data-g='H'><button data-p='gal' aria-pressed='true'>Galeria</button><button data-p='fotos' aria-pressed='false'>Fotos</button><button data-p='graf' aria-pressed='false'>Gráficos</button><button data-p='comp' aria-pressed='false'>Comparar</button><button data-p='rel' aria-pressed='false'>Relatório</button></div>
 <div class='sp' data-g='H' data-p='gal'>
 <div class="gal"><div class="row spread"><h2>Histórico</h2><small class="muted">Toque numa planta</small></div><div class="ggrid" id="gal"></div></div>
 <div id="gDet"></div>
@@ -728,7 +760,7 @@ details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
 </div>
 </details>
 </div>
-<div class='sp' data-g='H' data-p='graf' hidden><div class='panel'><div class='row' id='gfP'></div><div class='row' id='gfM' style='margin-top:10px'></div></div><div class='panel' id='gfC'></div></div>
+<div class='sp' data-g='H' data-p='fotos' hidden><div id='foV'></div></div><div class='sp' data-g='H' data-p='graf' hidden><div class='panel'><div class='row' id='gfP'></div><div class='row' id='gfM' style='margin-top:10px'></div></div><div class='panel' id='gfC'></div></div>
 <div class='sp' data-g='H' data-p='comp' hidden><div class='panel'><h3>Comparar plantas</h3><div id='cmpT' style='overflow-x:auto;margin-top:8px'></div></div><div class='panel'><h3>Por variedade</h3><div id='cmpV' style='overflow-x:auto;margin-top:8px'></div></div></div>
 <div class='sp' data-g='H' data-p='rel' hidden><div class='panel'><h3>Relatório do ciclo</h3><p class='muted' style='margin:6px 0'>Resumo com datas, pesos, gráficos, fotos e ocorrências de uma planta. Dá para baixar como arquivo para guardar ou imprimir.</p><label for='relP'>Planta</label><select id='relP'></select><div class='row' style='margin-top:10px'><button class='btn' id='relDl'>Baixar relatório</button></div></div><div id='relV'></div></div>
 </section>
@@ -792,7 +824,7 @@ const GT={
 const SRC={fonte:'Base: guias da Leds Indoor (2026).',parcial:'Base parcial: guias da Leds Indoor (2026); o restante é estimativa.',estimativa:'Estimativa: os guias não trazem números para esta fase.'};
 const TF=[['tmin','Temp. mín (°C)'],['tmax','Temp. máx (°C)'],['umin','Umidade mín (%)'],['umax','Umidade máx (%)'],['l','Luz ligada (h/dia)'],['on','Luz liga às'],['rf','Refrigeração (h/dia)'],['rg','Regar a cada (dias)']];
 const tgt=(s,pid)=>{const fs=s==='Floração'&&floStart(pid===undefined?cur:pid),fwk=fs?Math.floor(dd(fs,today())/7)+1:0,b=REF[s],o=S.targets[s]||{},au=ptype(pid===undefined?cur:pid)==='auto'&&(s==='Floração'||s==='Vegetativa'),p=(x,d)=>x===undefined||x===''?d:+x;return{t:[p(o.tmin,b.t[0]),p(o.tmax,b.t[1])],u:[p(o.umin,fwk?(fwk<=3?50:40):b.u[0]),p(o.umax,fwk?(fwk<=3?60:50):b.u[1])],l:p(o.l,au?18:b.l),on:o.on||'06:00',rf:o.rf===undefined?'':o.rf,rg:o.rg===undefined||o.rg===''?(S.cfg.rega||3):o.rg,d:au&&s==='Vegetativa'?null:b.d,s:au?'parcial':b.s,n:au?'Automática: floresce sozinha, em geral entre 2 e 4 semanas, sem trocar para 12/12. O ciclo completo leva de 8 a 12 semanas da germinação à colheita, e a fonte pede ao menos 6 h de luz direta por dia. As horas exatas de luz são estimativa: confirme com o banco de sementes.':b.n}};
-const FD=[['d','Data'],['h','Altura (cm)'],['w','Peso (g)'],['t1','Temp. mín (°C)'],['t2','Temp. máx (°C)'],['u','Umidade (%)'],['l','Luz ligada (h/dia)'],['r','Refrigeração (h/dia)'],['ag','Rega (ml)'],['ph','pH da água']];
+const FD=[['d','Data'],['h','Altura (cm)'],['w','Peso (g)'],['t1','Temp. mín (°C)'],['t2','Temp. máx (°C)'],['u','Umidade (%)'],['l','Luz ligada (h/dia)'],['r','Refrigeração (h/dia)'],['ag','Rega (ml)'],['ph','pH da água'],['ec','EC (mS/cm)']];
 const fld=f=>`<div><label for='f${f[0]}'>${f[1]}</label><input id='f${f[0]}' type='${f[0]==='d'?'date':'number'}' ${f[0]==='d'?'data-maxd':''} step='0.1' ${f[0]==='d'?`value='${today()}'`:''}></div>`;
 $('#fm').innerHTML=FD.slice(0,3).map(fld).join('')+`<details style='grid-column:1/-1;margin-top:8px'><summary class='muted'>Ambiente e rega</summary><div class='g2'>${FD.slice(3).map(fld).join('')}</div></details><details style='grid-column:1/-1;margin-top:8px'><summary class='muted'>Tricomas e problemas</summary><label for='ftri'>Tricomas (olhe com lupa)</label><select id='ftri'><option value=''>Não observei</option><option value='tr'>Maioria transparentes</option><option value='le'>Maioria leitosos</option><option value='lea'>Leitosos com um pouco de âmbar</option><option value='am'>Maioria âmbar</option></select><label for='fprob'>Problema observado</label><select id='fprob'><option value=''>Nenhum</option><option value='queim'>Folhas queimadas</option><option value='amar'>Amarelecimento</option><option value='mofo'>Mofo</option><option value='praga'>Pragas</option></select></details>`;
 
@@ -800,8 +832,8 @@ let hp='all',cur=S.plants[0]?.id||null,vs=null,sel=null,vm=new Date();vm.setDate
 const P=()=>S.plants.find(p=>p.id===cur);
 const ents=()=>S.entries.filter(e=>e.p===cur).sort((a,b)=>a.d.localeCompare(b.d));
 const cstage=es=>STG[Math.max(0,...es.map(e=>STG.indexOf(e.s)))];
-const bad=e=>{const r=REF[e.s]&&tgt(e.s,e.p),o=[];if(!r)return o;if(e.t1&&+e.t1<r.t[0])o.push('temperatura baixa');if(e.t2&&+e.t2>r.t[1])o.push('temperatura alta');if(e.u&&(+e.u<r.u[0]||+e.u>r.u[1]))o.push('umidade fora da meta');if(e.l&&r.l&&Math.abs(+e.l-r.l)>.5)o.push('luz diferente de '+r.l+' h');return o};
-function entryHTML(e,st){const b=bad(e),q=[];if(e.h)q.push(e.h+' cm');if(e.w)q.push(e.w+' g');if(e.t1||e.t2)q.push((e.t1||'?')+' a '+(e.t2||'?')+' °C');if(e.u)q.push(e.u+'% umid.');if(e.l)q.push('luz '+e.l+' h');if(e.r)q.push('refrig. '+e.r+' h');if(e.ag)q.push('rega '+e.ag+' ml');if(e.ph)q.push('pH '+e.ph);
+const bad=e=>{const r=REF[e.s]&&tgt(e.s,e.p),o=[];if(!r)return o;if(e.ph&&typeof phR==='function'){const pr=phR();if(+e.ph<pr[0]||+e.ph>pr[1])o.push('pH '+e.ph+' fora da faixa')}if(e.t1&&+e.t1<r.t[0])o.push('temperatura baixa');if(e.t2&&+e.t2>r.t[1])o.push('temperatura alta');if(e.u&&(+e.u<r.u[0]||+e.u>r.u[1]))o.push('umidade fora da meta');if(e.l&&r.l&&Math.abs(+e.l-r.l)>.5)o.push('luz diferente de '+r.l+' h');return o};
+function entryHTML(e,st){const b=bad(e),q=[];if(e.h)q.push(e.h+' cm');if(e.w)q.push(e.w+' g');if(e.t1||e.t2)q.push((e.t1||'?')+' a '+(e.t2||'?')+' °C');if(e.u)q.push(e.u+'% umid.');if(e.l)q.push('luz '+e.l+' h');if(e.r)q.push('refrig. '+e.r+' h');if(e.ag)q.push('rega '+e.ag+' ml');if(e.ph)q.push('pH '+e.ph);if(e.ec)q.push('EC '+e.ec);
   return `<div class='entry'>${U(e.img)?`<img src='${U(e.img)}' alt='Foto do registro'>`:''}<div style='flex:1'><strong>${fmt(e.d)}</strong>${st?` <small>${hp==='all'?esc((S.plants.find(x=>x.id===e.p)||{}).name||'')+' · ':''}${esc(e.s)}</small>`:''}<div>${q.join(' · ')}</div>${e.n?`<div class='muted'>${esc(e.n)}</div>`:''}${b.length?`<div class='warn'>⚠ ${b.join(', ')}</div>`:''}${e.tri?`<div class='muted'>Tricomas: ${TRI[e.tri]}</div>`:''}${e.prob?`<div class='warn'>⚠ ${PROB[e.prob][0]}: ${PROB[e.prob][1]}</div>`:''}</div><button class='btn ghost sm' data-del='e:${e.id}' aria-label='Apagar registro'>Apagar</button></div>`}
 
 // apagar em duas etapas (sem janela de confirmação do navegador)
@@ -1157,6 +1189,92 @@ function rLinks(){const lk=$('#lkP'),pp=$('#ptP'),mp=$('#mqP');if(!lk)return;con
   $('#mqGo').onclick=()=>{mc.url=$('#mqU').value.trim();mc.user=$('#mqN').value.trim();mc.pass=$('#mqP2').value;if(/^https?:\/\//.test(mc.url)){const u=mc.url;mc.url='';mc.pass='';save();pc.url=u.replace(/\/+$/,'');save();rLinks();const f=$('#ptU');if(f){f.value=pc.url;f.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>$('#ptS').focus(),400)}return toast('Esse é o endereço da Kaya Ponte. Coloquei no painel certo: agora digite a senha da ponte e toque em Conectar.')}if(!/^wss?:\/\//.test(mc.url))return toast('Use um endereço wss:// do seu servidor MQTT.');mc.on=true;save();$('#mqGo').textContent='Conectando...';mqConnect();setTimeout(()=>{rLinks();if(MQ.ok)toast('MQTT conectado.')},2500)};
   if($('#mqOff'))$('#mqOff').onclick=()=>{mc.on=false;try{MQ.c&&MQ.c.end(true)}catch(e){}MQ.ok=false;save();rLinks()}}
 
+// ===== Agenda, Nutrição e pH, Diário de fotos, Modo iniciante =====
+const SUBST={solo:['Solo ou terra',[6.0,7.0]],coco:['Fibra de coco',[5.5,6.5]],hidro:['Hidroponia',[5.5,6.2]]};
+const ECR={'Plantio no vaso':[0.2,0.6],'Muda':[0.4,0.8],'Vegetativa':[0.8,1.6],'Floração':[1.2,2.0]};
+const subs=()=>SUBST[S.cfg.subs]?S.cfg.subs:'solo';
+const phR=()=>SUBST[subs()][1];
+const ecR=st=>ECR[st]||null;
+function phaseWeek(p,es){const st=cstage(es),f=es.find(e=>e.s===st);return{st,wk:f?Math.floor(dd(f.d,today())/7)+1:1}}
+const isIni=()=>S.cfg.modo==='ini';
+// ---------- Modo iniciante ----------
+const GLOS={'12/12':'12 horas de luz e 12 de escuro total. É o que faz a planta fotoperiódica florescer.','Fotoperiódica':'Semente que só floresce quando a luz cai para 12 horas por dia.','Automática':'Semente que floresce sozinha, pela idade, sem mudar a luz.','Tricomas':'Pelinhos brilhantes na flor. Com lupa, mostram a hora de colher: transparentes, leitosos ou âmbar.','Pistilos':'Pelinhos brancos que aparecem no começo da floração.','Secagem':'Pendurar a planta colhida no escuro por 10 a 14 dias até os galhos finos quebrarem.','Cura':'Guardar as flores secas em potes de vidro por semanas, abrindo de vez em quando. Melhora cheiro e sabor.','pH':'Mede se a água está ácida ou alcalina. Fora da faixa, a raiz não absorve os nutrientes.','EC':'Mede quanto adubo tem na água (em mS/cm). Mais alto = água mais forte.','Substrato':'O que vai no vaso: terra, fibra de coco ou outro meio.','Topping':'Cortar a ponta principal para a planta crescer mais larga e baixa.','Clone':'Galho cortado de uma planta-mãe que cria raiz e vira uma planta nova, igual à mãe.'};
+const GUIA={'Germinação':['A semente acorda e solta a primeira raiz.',['Deixe a semente de molho em água por até 24 h','Passe para papel-toalha úmido, num prato tampado e no escuro','Olhe 2 vezes por dia e não deixe o papel secar','Quando a raiz aparecer, avance para Semente aberta'],['Substrato']],
+'Semente aberta':['A raiz apareceu: hora de ir para a terra.',['Prepare um vasinho com substrato úmido','Faça um furo de 1 cm e coloque a raiz para baixo','Cubra de leve, sem apertar','Avance para Plantio no vaso'],['Substrato']],
+'Plantio no vaso':['A plantinha sai da terra e abre as primeiras folhas.',['Luz suave, 18 h por dia','Regue pouco, só em volta do caule','Ar úmido, de 65 a 75%','Com as primeiras folhas serrilhadas, avance para Muda'],['pH']],
+'Muda':['A planta ganha raiz e os primeiros pares de folhas.',['Regue só quando o vaso estiver leve','Ainda sem adubo forte','Quando a raiz sair pelos furos, troque para o vaso maior','Com 4 a 5 pares de folhas, avance para Vegetativa'],['pH','EC']],
+'Vegetativa':['Fase de crescer: folhas, galhos e raiz.',['Luz 18 h ligada e 6 h apagada','Adubo de crescimento com metade da dose do rótulo no começo','Meça o pH da água antes de regar','Fotoperiódica: depois de 3 a 4 semanas, mude a luz para 12/12'],['12/12','Fotoperiódica','Automática','Topping','EC']],
+'Floração':['A planta forma as flores (buds).',['Luz 12 h ligada e 12 h no escuro total','Troque para o adubo de floração','Umidade mais baixa, de 40 a 50%','Na reta final, olhe os tricomas com lupa'],['Pistilos','Tricomas','12/12']],
+'Colheita':['Hora de cortar a planta.',['Corte os galhos com tesoura limpa','Pese tudo (peso molhado)','Tire as folhas grandes'],['Tricomas']],
+'Limpeza das folhas':['Deixar só as flores.',['Apare as folhinhas em volta dos buds','Pese só as flores'],[]],
+'Secagem da goma':['Secar devagar, no escuro.',['Pendure de cabeça para baixo no escuro','Ar circulando, sem vento direto','Pronto quando o galho fino quebra ao dobrar (10 a 14 dias)'],['Secagem']],
+'Cura':['Descanso nos potes para melhorar sabor e cheiro.',['Potes de vidro cheios até 3/4','Abra os potes alguns minutos todo dia nas 2 primeiras semanas','Depois, uma vez por semana, por 4 a 8 semanas'],['Cura']]};
+function rGuia(){const el=$('#guiaP');if(!el)return;const p=P();if(!isIni()||!p){el.hidden=true;return}el.hidden=false;const es=ents(),st=cstage(es),g=GUIA[st]||['',[],[]],i=STG.indexOf(st),ck=((S.cfg.gck=S.cfg.gck||{})[p.id]=S.cfg.gck[p.id]||{})[st]||[],nxt=STG[i+1],done=g[1].filter((x,k)=>ck[k]).length;
+  el.innerHTML=`<div class='row spread'><h3>Guia do cultivo</h3><span class='pill'>${i+1} de ${STG.length}</span></div><p style='margin:8px 0 2px'><b>${esc(p.name)} · ${esc(st)}</b></p><p class='muted' style='margin:0 0 10px'>${g[0]}</p><div class='pb' style='margin-bottom:10px'><i style='width:${g[1].length?done/g[1].length*100:0}%'></i></div>${g[1].map((x,k)=>`<label class='ck'><input type='checkbox' data-gk='${k}' ${ck[k]?'checked':''}> ${x}</label>`).join('')}
+  ${g[2].length?`<div class='gls'>${g[2].map(w=>`<button class='chip' data-gl='${esc(w)}'>O que é ${esc(w)}?</button>`).join('')}</div><p class='muted' id='glsT' style='margin:8px 0 0;min-height:1em'></p>`:''}
+  <div class='row' style='margin-top:12px'>${nxt&&done===g[1].length&&g[1].length?`<button class='btn' id='gNext'>Avançar para ${esc(nxt)}</button>`:''}<button class='btn ghost sm' id='gAdv'>Mostrar tudo (modo avançado)</button></div>`;
+  el.querySelectorAll('[data-gk]').forEach(c=>c.onchange=()=>{const a=S.cfg.gck[p.id][st]=S.cfg.gck[p.id][st]||[];a[+c.dataset.gk]=c.checked;save();rGuia()});
+  el.querySelectorAll('[data-gl]').forEach(b=>b.onclick=()=>{$('#glsT').innerHTML='<b>'+esc(b.dataset.gl)+':</b> '+esc(GLOS[b.dataset.gl]||'')});
+  if($('#gNext'))$('#gNext').onclick=()=>{S.entries.push({id:uid(),p:p.id,d:today(),s:nxt,n:'Avançou de '+st+' para '+nxt+'.'});save();R();toast(p.name+' agora em '+nxt+'.')};
+  $('#gAdv').onclick=()=>{S.cfg.modo='avan';save();applyMode();R();toast('Modo avançado: todas as telas aparecem. Volte ao modo iniciante em Mais › Perfil.')}}
+function applyMode(){const ini=isIni(),hide=(sel,h)=>document.querySelectorAll(sel).forEach(e=>e.hidden=h);
+  hide(".seg[data-g='E'] button[data-p='equip'],.seg[data-g='E'] button[data-p='regras'],.seg[data-g='E'] button[data-p='consumo'],.seg[data-g='E'] button[data-p='conectar'],.seg[data-g='P'] button[data-p='cl'],.seg[data-g='H'] button[data-p='comp'],.seg[data-g='H'] button[data-p='rel']",ini);
+  const dp=$('#devP');if(dp)dp.hidden=ini&&!own().length;
+  if(ini){if(['equip','regras','consumo','conectar'].includes(SUBS.E))sub('E','tenda');if(SUBS.P==='cl')sub('P','pl');if(['comp','rel'].includes(SUBS.H))sub('H','gal')}}
+function rModo(){const el=$('#modoP');if(!el)return;el.innerHTML=`<div class='row spread'><div><h3>Modo iniciante</h3><p class='muted' style='margin:6px 0 0'>Mostra um guia passo a passo e esconde telas avançadas (equipamentos, regras, consumo, conexões, clones e relatórios).</p></div><button class='tg' role='switch' id='modoT' aria-checked='${isIni()}' aria-label='Modo iniciante'></button></div>`;$('#modoT').onclick=()=>{S.cfg.modo=isIni()?'avan':'ini';save();applyMode();rModo();R();toast(isIni()?'Modo iniciante ligado.':'Modo avançado: todas as telas aparecem.')}}
+// ---------- Agenda da semana ----------
+function agenda(){const t=today(),A={};const add=(d,ic0,txt,pid)=>{if(d<t)d=t;if(dd(t,d)>6)return;(A[d]=A[d]||[]).push({ic:ic0,txt,pid})};
+  if((S.plants.length||S.entries.length)&&(!S.lastBackup||dd(S.lastBackup,t)>7))add(t,'save','Fazer backup dos seus dados');
+  S.plants.forEach(p=>{const es=S.entries.filter(e=>e.p===p.id).sort((a,b)=>a.d.localeCompare(b.d)),st=cstage(es),au=ptype(p.id)==='auto',fd=s=>{const e=es.find(x=>x.s===s);return e&&e.d},n=esc(p.name);
+    if(REGA_ON(st)){const iv=+tgt(st,p.id).rg||3,lw=es.filter(e=>+e.ag>0).pop(),pl=nutPlan(p,es);let d=lw?addD(lw.d,iv):t;for(let k=0;k<4&&dd(t,d)<=6;k++){add(d,'drop','Regar '+n+(pl.length?' com adubo ('+pl.map(x=>x.n).join(', ')+')':'')+(d<t||(lw&&dd(t,addD(lw.d,iv))<0&&k===0)?' (atrasada)':''),p.id);d=addD(d<t?t:d,iv)}}
+    if(['Vegetativa','Floração'].includes(st))add(t,'drop','Medir pH da água antes de regar '+n,p.id);
+    if(st==='Vegetativa'&&!au){const fv=fd('Vegetativa')||p.start||t,d20=addD(fv,19);add(d20<=t?t:d20,'moon',(d20<=t?'Pode':'A partir de hoje pode')+' virar a luz para 12/12 ('+n+')',p.id)}
+    if(st==='Floração'||(au&&st==='Vegetativa')){const hv=hvInfo(p,es);if(hv){if(hv.a>t)add(hv.a,'flower','Começa a janela de colheita de '+n,p.id);else for(let k=0;k<=6;k+=3)add(addD(t,k),'flower','Olhar os tricomas de '+n+' com lupa',p.id)}}
+    if(st==='Secagem da goma'){const f=fd('Secagem da goma');if(f){const d10=addD(f,9);add(d10<=t?t:d10,'wind','Testar se os galhos de '+n+' já quebram (secagem)',p.id)}}
+    if(st==='Cura'){const f=fd('Cura');if(f){for(let k=0;k<7;k++){const d=addD(t,k),dy=dd(f,d)+1;if(dy<=14||dy%7===0)add(d,'jar','Abrir os potes de '+n+' (cura, dia '+dy+')',p.id)}}}});
+  return A}
+function rAgenda(){const el=$('#agP');if(!el)return;if(!S.plants.length){el.hidden=true;return}el.hidden=false;const A=agenda(),t=today(),days=[...Array(7)].map((_,k)=>addD(t,k)),wd=d=>d===t?'Hoje':dd(t,d)===1?'Amanhã':new Date(d+'T00:00').toLocaleDateString('pt-BR',{weekday:'long'}).replace(/^./,c=>c.toUpperCase()),open=el.dataset.all==='1',tot=days.reduce((a,d)=>a+(A[d]||[]).length,0);
+  el.innerHTML=`<div class='row spread'><h3>Agenda da semana</h3><span class='pill'>${tot} tarefa(s)</span></div><div class='agl'>${days.filter((d,k)=>open||k<3).map(d=>`<div class='agd'><b>${wd(d)} <small class='muted'>${fmt(d).slice(0,5)}</small></b>${(A[d]||[]).length?(A[d]).map(x=>`<button class='agi' ${x.pid?`data-agp='${x.pid}'`:''}>${ic(x.ic)}<span>${x.txt}</span></button>`).join(''):`<small class='muted'>Nada marcado</small>`}</div>`).join('')}</div><button class='btn ghost sm' id='agAll' style='margin-top:10px'>${open?'Mostrar só 3 dias':'Ver a semana inteira'}</button>`;
+  $('#agAll').onclick=()=>{el.dataset.all=open?'0':'1';rAgenda()};el.querySelectorAll('[data-agp]').forEach(b=>b.onclick=()=>{cur=b.dataset.agp;vs=null;tab(2);sub('P','pl');R()})}
+// ---------- Nutrição e pH ----------
+const NUT=()=>S.nut||(S.nut={prods:[],plano:{}});
+const NWK=[['Muda',1]].concat([1,2,3,4,5,6].map(w=>['Vegetativa',w])).concat([1,2,3,4,5,6,7,8,9,10].map(w=>['Floração',w]));
+const nkey=(st,w)=>st==='Muda'?'Muda':st+'-'+Math.min(w,st==='Vegetativa'?6:10);
+function nutPlan(p,es){const{st,wk}=phaseWeek(p,es);if(!['Muda','Vegetativa','Floração'].includes(st))return[];const row=NUT().plano[nkey(st,wk)]||{};return NUT().prods.filter(x=>+row[x.id]>0).map(x=>({n:x.n,ml:+row[x.id]}))}
+function rNutri(){const el=$('#nuV');if(!el)return;const p=P(),N=NUT(),sb=subs(),r=phR();const es=p?ents():[],pw=p?phaseWeek(p,es):null,plan=p?nutPlan(p,es):[],L=+(S.cfg.nl||5);
+  const hist=p?es.filter(e=>e.ph||e.ec).slice(-12):[],ecr=pw?ecR(pw.st):null;
+  const spark=(k,lo,hi,u)=>{const v=hist.filter(e=>e[k]).map(e=>[e.d,+e[k]]);if(v.length<2)return '';const W=300,H=70,mn=Math.min(lo,...v.map(x=>x[1]))-.3,mx=Math.max(hi,...v.map(x=>x[1]))+.3,y=x=>H-6-(x-mn)/(mx-mn)*(H-12),x=i=>8+i*(W-16)/(v.length-1);return `<svg viewBox='0 0 ${W} ${H}' width='100%' role='img' aria-label='Histórico de ${u}'><rect x='0' y='${y(hi)}' width='${W}' height='${y(lo)-y(hi)}' fill='var(--ac)' opacity='.14'/><polyline fill='none' stroke='var(--ac)' stroke-width='2' points='${v.map((p,i)=>x(i)+','+y(p[1])).join(' ')}'/>${v.map((p,i)=>`<circle cx='${x(i)}' cy='${y(p[1])}' r='3' fill='${p[1]<lo||p[1]>hi?'var(--hl)':'var(--ac)'}'/>`).join('')}</svg>`};
+  el.innerHTML=`<div class='panel'><h3>Água e substrato</h3><label for='nuS'>O que você usa no vaso</label><select id='nuS'>${Object.keys(SUBST).map(k=>`<option value='${k}' ${k===sb?'selected':''}>${SUBST[k][0]}</option>`).join('')}</select><p class='muted' style='margin:8px 0 0'>pH ideal da água para ${SUBST[sb][0].toLowerCase()}: <b>${nbr(r[0],1)} a ${nbr(r[1],1)}</b>.${ecr?` EC de referência em ${esc(pw.st)}: <b>${nbr(ecr[0],1)} a ${nbr(ecr[1],1)} mS/cm</b>.`:''} São faixas gerais: siga também o rótulo do seu adubo.</p></div>
+  ${p?`<div class='panel'><div class='row spread'><h3>Esta semana · ${esc(p.name)}</h3><span class='pill'>${esc(pw.st)}${['Vegetativa','Floração'].includes(pw.st)?' · semana '+pw.wk:''}</span></div>${plan.length?`<label for='nuL'>Quantos litros vai preparar?</label><input id='nuL' type='number' inputmode='decimal' min='0.5' step='0.5' value='${L}'><div class='nul'>${plan.map(x=>`<div class='nur'><span>${esc(x.n)}</span><b>${nbr(x.ml*L,1)} ml</b><small class='muted'>${nbr(x.ml,1)} ml/L</small></div>`).join('')}</div><p class='muted' style='margin:8px 0 0;font-size:.88rem'>Misture o adubo na água e só depois acerte o pH.</p>`:`<p class='muted' style='margin:8px 0 0'>${['Muda','Vegetativa','Floração'].includes(pw.st)?'Nada no plano para esta semana. Monte o plano abaixo com as doses do rótulo do seu adubo.':'Sem adubo nesta fase.'}</p>`}
+  <h3 style='margin-top:16px'>Anotar pH e EC</h3><div class='g2'><div><label for='nuPh'>pH da água</label><input id='nuPh' type='number' inputmode='decimal' step='0.1' min='0' max='14'></div><div><label for='nuEc'>EC (mS/cm)</label><input id='nuEc' type='number' inputmode='decimal' step='0.1' min='0'></div></div><div class='row' style='margin-top:10px'><button class='btn' id='nuSave'>Salvar medição</button></div>
+  ${hist.some(e=>e.ph)?`<label style='margin-top:14px'>pH das últimas medições</label>${spark('ph',r[0],r[1],'pH')}`:''}${hist.some(e=>e.ec)&&ecr?`<label>EC das últimas medições</label>${spark('ec',ecr[0],ecr[1],'EC')}`:''}</div>`:`<div class='panel'><p class='muted' style='margin:0'>Cadastre uma planta para ver o plano da semana e anotar pH.</p></div>`}
+  <div class='panel'><h3>Meus adubos</h3><p class='muted' style='margin:6px 0 10px'>Cadastre os produtos que você usa. As doses vêm do rótulo: no começo, use metade.</p>${N.prods.length?`<div class='nul'>${N.prods.map(x=>`<div class='nur'><span>${esc(x.n)}</span><small class='muted'>${{veg:'crescimento',flor:'floração',ambos:'as duas fases'}[x.f]||''}</small><button class='btn ghost sm' data-nudel='${x.id}'>Remover</button></div>`).join('')}</div>`:''}<div class='g2'><div><label for='nuPn'>Nome do adubo</label><input id='nuPn' placeholder='Ex.: Base Veg A'></div><div><label for='nuPf'>Para qual fase</label><select id='nuPf'><option value='veg'>Crescimento</option><option value='flor'>Floração</option><option value='ambos'>As duas</option></select></div></div><div class='row' style='margin-top:10px'><button class='btn' id='nuPadd'>Adicionar adubo</button></div></div>
+  ${N.prods.length?`<div class='panel'><h3>Plano por semana (ml por litro)</h3><p class='muted' style='margin:6px 0 10px'>Preencha a dose de cada adubo em cada semana. Vazio ou 0 = não usar.</p><div style='overflow-x:auto'><table class='nut'><tr><th>Semana</th>${N.prods.map(x=>`<th>${esc(x.n)}</th>`).join('')}</tr>${NWK.map(([st,w])=>{const k=nkey(st,w),row=N.plano[k]||{},curK=pw&&nkey(pw.st,pw.wk)===k;return `<tr class='${curK?'cur':''}'><td>${st==='Muda'?'Muda':(st==='Vegetativa'?'Veg ':'Flor ')+w}${curK?' ←':''}</td>${N.prods.map(x=>{const off=(st==='Floração'&&x.f==='veg')||(st!=='Floração'&&x.f==='flor');return `<td><input type='number' inputmode='decimal' step='0.1' min='0' aria-label='${esc(x.n)} ${k}' data-nuk='${k}' data-nup='${x.id}' value='${row[x.id]??''}' ${off?`placeholder='—'`:''}></td>`}).join('')}</tr>`}).join('')}</table></div></div>`:''}`;
+  $('#nuS').onchange=e=>{S.cfg.subs=e.target.value;save();rNutri()};
+  if($('#nuL'))$('#nuL').onchange=e=>{S.cfg.nl=Math.max(.5,+e.target.value||5);save();rNutri()};
+  if($('#nuSave'))$('#nuSave').onclick=()=>{const ph=$('#nuPh').value,ec=$('#nuEc').value;if(!ph&&!ec)return toast('Informe o pH ou a EC.');if(ph&&(+ph<0||+ph>14))return toast('O pH vai de 0 a 14.');S.entries.push({id:uid(),p:p.id,d:today(),s:cstage(es),ph,ec,n:'Medição de pH/EC'});save();R();rNutri();const out=ph&&(+ph<r[0]||+ph>r[1]);toast(out?'pH '+ph+' fora da faixa ('+nbr(r[0],1)+' a '+nbr(r[1],1)+'). Ajuste antes de regar.':'Medição salva.')};
+  $('#nuPadd').onclick=()=>{const n=$('#nuPn').value.trim();if(!n)return $('#nuPn').focus();N.prods.push({id:uid(),n,f:$('#nuPf').value});save();rNutri();toast(n+' adicionado. Agora preencha as doses no plano.')};
+  el.querySelectorAll('[data-nudel]').forEach(b=>b.onclick=()=>{N.prods=N.prods.filter(x=>x.id!==b.dataset.nudel);save();rNutri()});
+  el.querySelectorAll('[data-nuk]').forEach(i=>i.onchange=()=>{const row=N.plano[i.dataset.nuk]=N.plano[i.dataset.nuk]||{};if(i.value===''||+i.value<=0)delete row[i.dataset.nup];else row[i.dataset.nup]=+i.value;save();if(TAB===2)rNutri()})}
+// ---------- Diário de fotos ----------
+let FP={pid:null,a:null,b:null,tl:null,rec:null};
+function rFotos(){const el=$('#foV');if(!el)return;if(!S.plants.length){el.innerHTML=`<div class='panel'><p class='muted' style='margin:0'>Cadastre uma planta para começar o diário de fotos.</p></div>`;return}
+  if(!S.plants.some(p=>p.id===FP.pid))FP.pid=(P()||S.plants[0]).id;const p=S.plants.find(x=>x.id===FP.pid),st0=p.start,ph=S.entries.filter(e=>e.p===p.id&&U(e.img)).sort((a,b)=>a.d.localeCompare(b.d)),day=d=>dd(st0||d,d)+1;
+  if(!ph.some(e=>e.id===FP.a))FP.a=ph[0]?.id||null;if(!ph.some(e=>e.id===FP.b))FP.b=ph[ph.length-1]?.id||null;const A=ph.find(e=>e.id===FP.a),B=ph.find(e=>e.id===FP.b),today_has=ph.some(e=>e.d===today());
+  el.innerHTML=`<div class='panel'><div class='row' id='foPl'>${S.plants.map(x=>`<button class='chip' data-fop='${x.id}' aria-pressed='${x.id===p.id}'>${esc(x.name)}</button>`).join('')}</div>
+  <div class='foadd'><div><b>${today_has?'Foto de hoje já registrada':'Foto de hoje'}</b><small class='muted' style='display:block'>Dia ${day(today())} de ${esc(p.name)} · ${esc(cstage(S.entries.filter(e=>e.p===p.id)))}</small></div><label class='btn' for='foIn'>${today_has?'Outra foto':'Tirar foto'}</label><input type='file' id='foIn' accept='image/*' capture='environment' hidden></div><p class='muted' style='margin:8px 0 0;font-size:.85rem'>Dica: tire sempre do mesmo lugar e com a mesma luz, para o timelapse ficar bonito.</p></div>
+  ${ph.length>=2?`<div class='panel'><h3>Antes e depois</h3><div class='g2'><div><label for='foA'>Antes</label><select id='foA'>${ph.map(e=>`<option value='${e.id}' ${e.id===FP.a?'selected':''}>Dia ${day(e.d)} · ${fmt(e.d).slice(0,5)}</option>`).join('')}</select></div><div><label for='foB'>Depois</label><select id='foB'>${ph.map(e=>`<option value='${e.id}' ${e.id===FP.b?'selected':''}>Dia ${day(e.d)} · ${fmt(e.d).slice(0,5)}</option>`).join('')}</select></div></div><div class='cmp' id='foCmp'><img src='${U(B.img)}' alt='Depois'><div class='cmpA' id='foCa'><img src='${U(A.img)}' alt='Antes'></div><span class='cmpBar' id='foBar'></span><span class='cmpL'>Dia ${day(A.d)}</span><span class='cmpR'>Dia ${day(B.d)}</span><input type='range' id='foR' min='0' max='100' value='50' aria-label='Comparar antes e depois'></div></div>
+  <div class='panel'><div class='row spread'><h3>Timelapse</h3><span class='pill'>${ph.length} fotos</span></div><canvas id='foTl' width='540' height='540' aria-label='Timelapse do crescimento'></canvas><div class='row' style='margin-top:10px'><button class='btn' id='foPlay'>▶ Ver crescimento</button><button class='btn ghost' id='foRec'>Baixar vídeo</button></div><small class='muted' id='foRecS' style='display:block;margin-top:6px'></small></div>`:`<div class='panel'><p class='muted' style='margin:0'>Com 2 fotos ou mais aparecem o antes e depois e o timelapse.</p></div>`}
+  ${ph.length?`<div class='panel'><h3>Linha do tempo</h3><div class='fog'>${ph.slice().reverse().map(e=>`<figure><img src='${U(e.img)}' alt='Foto do dia ${day(e.d)}' loading='lazy'><figcaption><b>Dia ${day(e.d)}</b> · ${fmt(e.d).slice(0,5)}<br><small>${esc(e.s)}${e.h?' · '+e.h+' cm':''}</small></figcaption></figure>`).join('')}</div></div>`:''}`;
+  el.querySelectorAll('[data-fop]').forEach(b=>b.onclick=()=>{FP.pid=b.dataset.fop;FP.a=FP.b=null;rFotos()});
+  $('#foIn').onchange=async e=>{const f=e.target.files[0];if(!f)return;const im=putImg(await img(f,1080));S.entries.push({id:uid(),p:p.id,d:today(),s:cstage(S.entries.filter(x=>x.p===p.id)),img:im,n:'Foto do dia'});save();FP.b=null;rFotos();toast('Foto do dia salva.')};
+  if(A&&B){$('#foA').onchange=e=>{FP.a=e.target.value;rFotos()};$('#foB').onchange=e=>{FP.b=e.target.value;rFotos()};$('#foR').oninput=e=>{const v=+e.target.value;$('#foCa').style.clipPath='inset(0 '+(100-v)+'% 0 0)';$('#foBar').style.left=v+'%'};
+    const cv=$('#foTl'),cx=cv.getContext('2d'),imgs=[];let ready=0;ph.forEach((e,i)=>{const im=new Image();im.onload=()=>{ready++;if(i===0)draw(0)};im.src=U(e.img);imgs[i]=im});
+    function draw(i){const im=imgs[i];cx.fillStyle='#0b120d';cx.fillRect(0,0,540,540);if(im&&im.complete&&im.naturalWidth){const k=Math.max(540/im.naturalWidth,540/im.naturalHeight),w=im.naturalWidth*k,h=im.naturalHeight*k;cx.drawImage(im,(540-w)/2,(540-h)/2,w,h)}cx.fillStyle='rgba(0,0,0,.55)';cx.fillRect(0,470,540,70);cx.fillStyle='#7ed957';cx.font='800 30px Manrope,system-ui,sans-serif';cx.fillText('Dia '+day(ph[i].d),20,515);cx.fillStyle='#eef6ea';cx.font='600 20px Manrope,system-ui,sans-serif';cx.fillText(p.name+' · '+ph[i].s,170,513);cx.textAlign='right';cx.fillText('Kaya',520,513);cx.textAlign='left'}
+    const play=(onEnd)=>{clearInterval(FP.tl);let i=0;draw(0);FP.tl=setInterval(()=>{i++;if(i>=ph.length){clearInterval(FP.tl);onEnd&&onEnd();return}draw(i)},Math.max(250,Math.min(700,6000/ph.length)))};
+    $('#foPlay').onclick=()=>play();
+    $('#foRec').onclick=()=>{if(!cv.captureStream||!window.MediaRecorder)return toast('Este navegador não grava vídeo. Use o Chrome.');const ty=['video/mp4','video/webm;codecs=vp9','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));if(!ty)return toast('Este navegador não grava vídeo.');const rec=new MediaRecorder(cv.captureStream(30),{mimeType:ty}),ch=[];rec.ondataavailable=e=>e.data.size&&ch.push(e.data);rec.onstop=()=>{const b=new Blob(ch,{type:ty.split(';')[0]});$('#foRecS').textContent='';dl('kaya-'+p.name.replace(/[^\w-]+/g,'-')+'-timelapse.'+(ty.includes('mp4')?'mp4':'webm'),b)};$('#foRecS').textContent='Gravando o vídeo...';rec.start();play(()=>setTimeout(()=>rec.stop(),600))}}}
+
 function rConn(){const ad=$('#advC');if(ad&&!ad.dataset.init){ad.dataset.init=1;ad.open=!!(mqCfg().on||haCfg().on)}rLinks();rHA();const O=own(),ent=S.cfg.ent=S.cfg.ent||{},E=id=>ent[id]||('switch.kaya_'+id.replace(/^x_/,'x')),sc=O.map(q=>({q,w:schWin(q.id)})).filter(x=>x.w&&x.w.a),rl=S.rules.filter(r=>r.on&&O.some(q=>q.id===r.dev)),Q=id=>ALLEQ().find(q=>q.id===id)||{n:id},mode=S.cfg.cm||'alexa',un=r=>r.s==='t'?' °C':'%';
   const alexa=[...sc.flatMap(({q,w})=>[[`Kaya: ${q.n} liga`,`Horário: todos os dias às ${w.a}`,`Casa inteligente › ${q.n} › Ligar`],[`Kaya: ${q.n} desliga`,`Horário: todos os dias às ${w.b}`,`Casa inteligente › ${q.n} › Desligar`]]),...rl.map(r=>[`Kaya: ${Q(r.dev).n} por ${r.s==='t'?'temperatura':'umidade'}`,`Casa inteligente › sensor de ${r.s==='t'?'temperatura':'umidade'} ${r.op==='>'?'acima de':'abaixo de'} ${r.val}${un(r)}`,`Casa inteligente › ${Q(r.dev).n} › ${r.a==='off'?'Desligar':'Ligar'}`])];
   const tuya=sc.map(({q,w})=>`${q.n}: ligar às ${w.a} e desligar às ${w.b}, todos os dias`);
@@ -1266,6 +1384,7 @@ function rToday(){
     if(cstage(es)==='Secagem da goma'){const f=es.find(e=>e.s==='Secagem da goma');if(f)L.push(ic('wind')+esc(p.name)+': secagem no dia '+(dd(f.d,t)+1)+' (típico: 10 a 14). Veja o Modo Secagem na aba Plantas.')}
     if(cstage(es)==='Cura'){const f=es.find(e=>e.s==='Cura');if(f){const dy=dd(f.d,t)+1;if(dy<=14&&!es.some(e=>e.pot&&e.d===t))L.push(ic('jar')+esc(p.name)+': abra os potes hoje (rotina das primeiras semanas da cura, semana '+Math.ceil(dy/7)+').')}}
     const tf=tentFit(p);if(tf&&STG.indexOf(cstage(es))<6&&tf.free<0)L.push(ic('ruler')+esc(p.name)+': altura prevista de '+tf.pj+' cm passa do limite da estufa '+esc(tn(tf.t))+' ('+tf.t.h+' cm).')
+    {const lp=es.filter(e=>e.ph&&dd(e.d,t)<=3).sort((a,b)=>a.d.localeCompare(b.d)).pop();if(lp&&typeof phR==='function'){const r2=phR();if(+lp.ph<r2[0]||+lp.ph>r2[1])L.push(ic('drop')+esc(p.name)+': último pH foi '+lp.ph+' ('+fmt(lp.d).slice(0,5)+'), fora da faixa de '+nbr(r2[0],1)+' a '+nbr(r2[1],1)+'. Ajuste a água antes da próxima rega.')}}
     const pr=es.filter(e=>e.prob&&!e.ok&&dd(e.d,t)<=7).sort((a,b)=>a.d.localeCompare(b.d)).pop();if(pr)L.push(ic('alert')+esc(p.name)+': '+PROB[pr.prob][0].toLowerCase()+' registrado em '+fmt(pr.d).slice(0,5)+' ('+PROB[pr.prob][1]+').')});
   const pl=P(),w=wxs().dias.find(d=>d[0]===t);
   if(pl&&w){const r=tgt(cstage(ents()),pl.id),off=S.cfg.off===undefined?4:+S.cfg.off;if(w[2]+off>r.t[1])L.push(ic('thermo')+'Hoje: máxima de '+w[2]+' °C na rua, tenda ~'+(w[2]+off)+' °C (meta até '+r.t[1]+').')}
@@ -1515,7 +1634,7 @@ function reportBody(p,pal){
 <h3>Fases</h3><table><tr><th>Fase</th><th>Início</th><th>Dias</th><th>Registros</th></tr>${rows}</table>${ch}
 <h3>Ocorrências</h3>${prob.length?`<table>${prob.map(e=>`<tr><td>${fmt(e.d)}</td><td>${e.s}</td><td class='w'>${PROB[e.prob][0]}</td><td>${esc(e.n||'')}</td></tr>`).join('')}</table>`:`<p>Nenhum problema registrado.</p>`}${tri.length?`<p><b>Tricomas</b></p><table>${tri.map(e=>`<tr><td>${fmt(e.d)}</td><td>${TRI[e.tri]}</td></tr>`).join('')}</table>`:''}<p>Registros fora da meta da fase: <b>${al.length}</b>${al.length?`<br><small>${al.slice(-8).map(e=>fmt(e.d)+' · '+e.s+' · '+bad(e).join(', ')).join('<br>')}</small>`:''}</p>
 ${pick.length?`<h3>Fotos</h3><div class='ph3'>${pick.map(e=>`<div><img src='${U(e.img)}' alt='Foto'><small>${fmt(e.d)} · ${e.s}</small></div>`).join('')}</div>`:''}
-<h3>Registros</h3><table><tr><th>Data</th><th>Fase</th><th>Medidas</th><th>Nota</th></tr>${es.slice(-120).map(e=>{const q=[];if(e.h)q.push(e.h+' cm');if(e.w)q.push(e.w+' g');if(e.t1||e.t2)q.push((e.t1||'?')+' a '+(e.t2||'?')+' °C');if(e.u)q.push(e.u+'%');if(e.ag)q.push(e.ag+' ml');if(e.ph)q.push('pH '+e.ph);return `<tr><td>${fmt(e.d)}</td><td>${e.s}</td><td>${q.join(' · ')}</td><td>${esc(e.n||'')}</td></tr>`}).join('')}</table>
+<h3>Registros</h3><table><tr><th>Data</th><th>Fase</th><th>Medidas</th><th>Nota</th></tr>${es.slice(-120).map(e=>{const q=[];if(e.h)q.push(e.h+' cm');if(e.w)q.push(e.w+' g');if(e.t1||e.t2)q.push((e.t1||'?')+' a '+(e.t2||'?')+' °C');if(e.u)q.push(e.u+'%');if(e.ag)q.push(e.ag+' ml');if(e.ph)q.push('pH '+e.ph);if(e.ec)q.push('EC '+e.ec);return `<tr><td>${fmt(e.d)}</td><td>${e.s}</td><td>${q.join(' · ')}</td><td>${esc(e.n||'')}</td></tr>`}).join('')}</table>
 <p><small>Dados registrados por você. As metas do app são referências gerais de guias de lojas e não substituem orientação profissional. Custos e rendimentos são estimativas.</small></p>`}
 function rRel(){
   const sel=$('#relP'),cv=sel.value;sel.innerHTML=S.plants.map(x=>`<option value='${x.id}'>${esc(x.name)}</option>`).join('');
@@ -1666,7 +1785,7 @@ function shView(k){
   T.textContent={rega:'Regar',med:'Medir',nota:'Nota ou foto',prob:'Problema',fase:'Avançar fase'}[k]+' · '+p.name;
   let h='';
   if(k==='rega'){const lw=[...es].reverse().find(e=>+e.ag>0),ml=lw?+lw.ag:200;h=`<p class='muted' style='margin:0 0 8px'>Um toque registra a rega de hoje.</p><div class='qv'>${[...new Set([ml,250,500,1000,1500])].slice(0,4).map(v=>`<button class='tile' data-qv='${v}'><span>${ic('drop')}</span>${v} ml</button>`).join('')}</div><label for='shRg'>Outro volume: <b id='shRv'>${ml} ml</b></label><input type='range' id='shRg' min='0' max='${Math.max(2000,ml)}' step='10' value='${ml}'>`}
-  if(k==='med')h=`<div class='g2'><div><label for='shH'>Altura (cm)</label><input type='number' inputmode='decimal' id='shH'></div><div><label for='shU'>Umidade (%)</label><input type='number' inputmode='decimal' id='shU'></div><div><label for='shT1'>Temp. mín (°C)</label><input type='number' inputmode='decimal' step='0.1' id='shT1'></div><div><label for='shT2'>Temp. máx (°C)</label><input type='number' inputmode='decimal' step='0.1' id='shT2'></div><div><label for='shPh'>pH da água</label><input type='number' inputmode='decimal' step='0.1' id='shPh'></div></div><small class='muted'>Preencha só o que mediu. Enter salva.</small>`;
+  if(k==='med')h=`<div class='g2'><div><label for='shH'>Altura (cm)</label><input type='number' inputmode='decimal' id='shH'></div><div><label for='shU'>Umidade (%)</label><input type='number' inputmode='decimal' id='shU'></div><div><label for='shT1'>Temp. mín (°C)</label><input type='number' inputmode='decimal' step='0.1' id='shT1'></div><div><label for='shT2'>Temp. máx (°C)</label><input type='number' inputmode='decimal' step='0.1' id='shT2'></div><div><label for='shPh'>pH da água</label><input type='number' inputmode='decimal' step='0.1' id='shPh'></div><div><label for='shEc'>EC (mS/cm)</label><input type='number' inputmode='decimal' step='0.1' id='shEc'></div></div><small class='muted'>Preencha só o que mediu. Enter salva.</small>`;
   if(k==='nota')h=`<label for='shN'>Anotação</label><textarea id='shN' rows='3'></textarea><label for='shF'>Foto</label><input type='file' id='shF' accept='image/*'>`;
   if(k==='prob')h=`<label for='shN'>Anotação (opcional)</label><input id='shN' placeholder='Onde, quantas folhas...'><p class='muted' style='margin:12px 0 8px'>Toque no problema para registrar.</p><div class='qv'>${Object.keys(PROB).map(x=>`<button class='tile' data-pb='${x}'><span>${ic('alert')}</span>${PROB[x][0]}</button>`).join('')}</div><select id='shP' hidden>${Object.keys(PROB).map(x=>`<option value='${x}'>${PROB[x][0]}</option>`).join('')}</select>`;
   if(k==='fase')h=nxt?`<p style='margin:8px 0'>Concluir <b>${st}</b> e avançar para <b>${nxt}</b>?</p>`:`<p style='margin:8px 0'>O ciclo já está na última fase.</p>`;
@@ -1679,7 +1798,7 @@ function shView(k){
   if(k==='rega')$('#shRg').oninput=e=>{$('#shRv').textContent=e.target.value+' ml'};
   if($('#shOk'))$('#shOk').onclick=async()=>{
     if(k==='rega'){const v=+$('#shRg').value;if(!v)return toast('Escolha o volume.');S.entries.push(mk({ag:String(v),n:'Rega'}));fin('Rega registrada: '+v+' ml.')}
-    else if(k==='med'){const o={};[['h','shH'],['ph','shPh'],['t1','shT1'],['t2','shT2'],['u','shU']].forEach(x=>{const v=$('#'+x[1]).value;if(v!=='')o[x[0]]=v});if(!Object.keys(o).length)return toast('Preencha ao menos um valor.');S.entries.push(mk(o));evalRules();fin('Medidas salvas.')}
+    else if(k==='med'){const o={};[['h','shH'],['ph','shPh'],['ec','shEc'],['t1','shT1'],['t2','shT2'],['u','shU']].forEach(x=>{const v=$('#'+x[1]).value;if(v!=='')o[x[0]]=v});if(!Object.keys(o).length)return toast('Preencha ao menos um valor.');S.entries.push(mk(o));evalRules();fin('Medidas salvas.')}
     else if(k==='nota'){const n=$('#shN').value.trim(),im=putImg(await img($('#shF').files[0],640));if(!n&&!im)return toast('Escreva algo ou escolha uma foto.');S.entries.push(mk({n,img:im}));fin('Registro salvo.')}
     else if(k==='prob'){S.entries.push(mk({prob:$('#shP').value,n:$('#shN').value.trim()}));fin('Problema registrado.')}
     else if(k==='fase'){S.entries.push({id:uid(),p:cur,d:today(),s:nxt,n:'Avançou de '+st+' para '+nxt+'.'});vs=null;fin('Fase avançada para '+nxt+'.')}
@@ -1712,7 +1831,7 @@ const wxOk=()=>!S.cfg.user||/goiania/.test(normC(S.cfg.user.cidade));
 function chkWelcome(){$('#welcome').hidden=!!(S.cfg.user&&S.cfg.user.aceite)}
 $('#wOk').onchange=()=>{$('#wGo').disabled=!$('#wOk').checked;$('#wGIn').disabled=!$('#wOk').checked};
 $('#wGIn').onclick=()=>{if(!$('#wOk').checked)return;$('#wGo').click();gLogin()};
-$('#wGo').onclick=()=>{if(!$('#wOk').checked)return;S.cfg.user={nome:$('#wN').value.trim(),cidade:$('#wC').value.trim(),aceite:today(),v:1};save();R();toast('Tudo pronto. Bom cultivo!')};
+$('#wGo').onclick=()=>{if(!$('#wOk').checked)return;S.cfg.user={nome:$('#wN').value.trim(),cidade:$('#wC').value.trim(),aceite:today(),v:1};if(!S.cfg.modo)S.cfg.modo='ini';save();R();toast('Tudo pronto. Bom cultivo!')};
 function rUser(){const u=S.cfg.user||{},gp=(S.cfg.g||{}).pic;$('#avatar').textContent=gp?'':u.nome?u.nome.trim()[0].toUpperCase():'K';$('#avatar').style.backgroundImage=gp?'url("'+gp.replace(/["\\]/g,'')+'")':'';if(document.activeElement!==$('#pfN'))$('#pfN').value=u.nome||'';if(document.activeElement!==$('#pfC'))$('#pfC').value=u.cidade||''}
 $('#pfS').onclick=()=>{S.cfg.user=Object.assign({},S.cfg.user,{nome:$('#pfN').value.trim(),cidade:$('#pfC').value.trim(),aceite:(S.cfg.user&&S.cfg.user.aceite)||today(),v:1});save();R();toast('Perfil salvo.')};
 $('#avatar').onclick=()=>{tab(4);sub('M','perfil')};
@@ -1787,6 +1906,9 @@ const LOGO='data:image/webp;base64,UklGRmq2AABXRUJQVlA4WAoAAAAQAAAA+AEABwIAQUxQS
 const sp=$('#splash'),hideSp=()=>{sp.style.opacity=0;setTimeout(()=>sp.hidden=true,400)};sp.onclick=hideSp;setTimeout(hideSp,1600);
 addEventListener('pointermove',e=>{const w=e.target.closest&&e.target.closest('.tentwrap');document.querySelectorAll('.tentwrap').forEach(x=>{if(x!==w){x.style.removeProperty('--rx');x.style.removeProperty('--ry')}});if(!w||matchMedia('(prefers-reduced-motion:reduce)').matches)return;const r=w.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;w.style.setProperty('--ry',(px*14).toFixed(1)+'deg');w.style.setProperty('--rx',(-py*10).toFixed(1)+'deg')},{passive:true});
 addEventListener('pointerup',()=>document.querySelectorAll('.tentwrap').forEach(x=>{x.style.removeProperty('--rx');x.style.removeProperty('--ry')}));
+
+{const _rt=renderTab;renderTab=function(n){_rt(n);try{applyMode();if(n===1){rGuia();rAgenda()}if(n===2&&SUBS.P==='nu')rNutri();if(n===5&&SUBS.H==='fotos')rFotos();if(n===4&&SUBS.M==='perfil')rModo()}catch(e){console.error(e)}};
+ const _sb=sub;sub=function(g,k){_sb(g,k);try{if(g==='P'&&k==='nu')rNutri();if(g==='H'&&k==='fotos')rFotos();if(g==='M'&&k==='perfil')rModo()}catch(e){console.error(e)}}}
 
 if('serviceWorker' in navigator&&location.protocol==='https:'&&!inClaude())navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
