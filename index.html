@@ -15,6 +15,10 @@
 <style>
 :root{--bg:#16181d;--sf:#20232a;--tx:#f1f4f2;--mu:#8e98a3;--ac:#22c55e;--ln:#2d323b;--hl:#f2c14e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 
+:root[data-theme="light"]{--bg:#f4f7f3;--sf:#fff;--tx:#17221b;--mu:#5d6b62;--ac:#1a9a4b;--ln:#d5ddd6;--hl:#b7791f;color-scheme:light}
+:root[data-theme="light"] .node.cur,:root[data-theme="light"] .btn:not(.ghost):not(.danger){color:#fff}
+:root[data-theme="light"] #nowP{background:linear-gradient(165deg,#dff3e5,var(--sf) 62%)}
+:root[data-theme="light"] .stats>div,:root[data-theme="light"] #today p{background:rgba(0,0,0,.04)}
 :root[data-theme="dark"]{--bg:#141d17;--sf:#1c2820;--tx:#e6efe4;--mu:#93a79a;--ac:#7cc593;--ln:#2e3d33;--hl:#e0b457}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -702,11 +706,13 @@ table.nut tr.cur td{background:rgba(126,217,87,.1)}
 
 </section>
 <section id="v4" hidden>
-<div class='seg' data-g='M'><button data-p='cards' aria-pressed='true'>Cards</button><button data-p='backup' aria-pressed='false'>Backup</button><button data-p='fontes' aria-pressed='false'>Fontes</button><button data-p='perfil' aria-pressed='false'>Perfil</button><button data-p='sobre' aria-pressed='false'>Sobre</button></div>
+<div class='seg' data-g='M'><button data-p='cards' aria-pressed='true'>Cards</button><button data-p='backup' aria-pressed='false'>Backup</button><button data-p='fontes' aria-pressed='false'>Fontes</button><button data-p='diag' aria-pressed='false'>Diagnóstico</button><button data-p='perfil' aria-pressed='false'>Perfil</button><button data-p='sobre' aria-pressed='false'>Sobre</button></div>
+<div class='sp' data-g='M' data-p='diag' hidden><div class='panel'><h3>Diagnóstico de problemas</h3><p class='muted' style='margin:6px 0'>Escolha o sintoma. São causas comuns de guias gerais, não um diagnóstico: confirme com quem entende do seu cultivo.</p><div class='row' id='dgS'></div><div id='dgR' style='margin-top:12px'></div></div></div>
 <div class='sp' data-g='M' data-p='perfil' hidden>
 <div class='panel' id='modoP'></div>
 <div class='panel' id='gP'></div>
 <div class='panel'><h3>Perfil</h3><div class='g2'><div><label for='pfN'>Nome</label><input id='pfN'></div><div><label for='pfC'>Cidade</label><input id='pfC' placeholder='Ex.: Curitiba'></div></div><p class='muted' style='margin:8px 0'>A cidade vem preenchida no formulário de previsão, em Estufa › Clima. O Kaya não busca o tempo sozinho: você informa a previsão copiando de um app ou site de clima.</p><div class='row'><button class='btn' id='pfS'>Salvar perfil</button></div></div>
+<div class='panel'><h3>Aparência</h3><div class='row' style='margin-top:8px'><button class='btn ghost' id='thB'></button></div></div>
 <div class='panel'><h3>PIN de acesso</h3><p class='muted' id='pinS' style='margin:6px 0'></p><div id='pinF'></div></div>
 <div class='panel'><h3>Privacidade dos dados</h3><p class='muted' style='margin:6px 0 10px'>Os seus dados ficam só neste navegador, neste aparelho. O Kaya não tem conta e não envia nada a servidores. Quem usar outro aparelho ou navegador começa do zero. Faça backups (aba Backup) para não perder nada.</p><div class='row'><button class='btn ghost' id='wipe' data-del='x:all'>Apagar todos os meus dados</button></div></div>
 </div>
@@ -1391,7 +1397,7 @@ function segFade(){document.querySelectorAll('.seg,#scn').forEach(s=>{const f=()
 addEventListener('resize',segFade);
 function sub(g,k){setTimeout(()=>{const b=document.querySelector(`.seg[data-g='${g}'] button[aria-pressed=true]`);if(b&&b.offsetParent){const sg=b.parentElement;sg.scrollTo({left:b.offsetLeft-sg.offsetLeft-(sg.clientWidth-b.offsetWidth)/2})}segFade()},0);SUBS[g]=k;document.querySelectorAll(`.sp[data-g='${g}']`).forEach(x=>x.hidden=x.dataset.p!==k);document.querySelectorAll(`.seg[data-g='${g}'] button`).forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===k));
   if(g==='E'){if(k==='clima')rWx();if(k==='tenda'){rTent();rPlanner()}if(k==='equip'){if(P())$('#aph').value=cstage(ents());rScenes();rAuto()}if(k==='conectar'){rPlan();rConn()}if(k==='regras')rRules();if(k==='consumo')rCons()}
-  if(g==='M'&&k==='backup')rBk();if(g==='M'&&k==='hist')rHist();if(g==='P'&&k==='cl')rClones();if(g==='P'&&k==='pl'){rSeeds();rPlants();rMain()}if(g==='M'&&k==='cards')rColl();if(g==='M'&&k==='perfil'){rUser();rPin();rGoogle()}if(g==='M'&&k==='perfil'){rUser();rPin();rGoogle()}if(g==='H'){if(k==='gal'){rHist();rGal()}if(k==='graf')rGraf();if(k==='comp')rComp();if(k==='rel')rRel()}bindDel()}
+  if(g==='M'&&k==='diag')rDiag();if(g==='M'&&k==='backup')rBk();if(g==='M'&&k==='hist')rHist();if(g==='P'&&k==='cl')rClones();if(g==='P'&&k==='pl'){rSeeds();rPlants();rMain()}if(g==='M'&&k==='cards')rColl();if(g==='M'&&k==='perfil'){rUser();rPin();rGoogle()}if(g==='M'&&k==='perfil'){rUser();rPin();rGoogle()}if(g==='H'){if(k==='gal'){rHist();rGal()}if(k==='graf')rGraf();if(k==='comp')rComp();if(k==='rel')rRel()}bindDel()}
 document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>sub(b.parentNode.dataset.g,b.dataset.p));
 function rToday(){
   const L=[],t=today();
@@ -1412,6 +1418,18 @@ function rToday(){
   const el=$('#today');el.hidden=!S.plants.length;
   el.innerHTML='<h3>Hoje</h3>'+(L.length?L.map(x=>`<p style='margin:6px 0'>${x}</p>`).join(''):`<p class='muted' style='margin:6px 0'>${ic('check')}Tudo certo por aqui</p>`);if($('#hojeBk'))$('#hojeBk').onclick=async()=>{await $('#bkE').onclick();R()};
 }
+const DIAG={'Folhas amarelas por baixo':['Falta de nitrogênio (comum perto da floração, pode ser normal)','Rega em excesso ou vaso sem drenagem','pH fora da faixa que bloqueia nutrientes'],
+'Pontas queimadas':['Excesso de nutrientes (EC alta)','Luz muito perto das plantas','Calor ou ar muito seco'],
+'Folhas enroladas para baixo':['Rega em excesso (folhas "caídas")','Raízes sem oxigênio, solo encharcado'],
+'Folhas enroladas para cima':['Calor ou luz forte demais','Umidade muito baixa'],
+'Manchas marrons ou ferrugem':['Falta de cálcio ou magnésio','pH desregulado','Fungos, se houver pó ou mofo junto'],
+'Pó branco nas folhas':['Oídio (fungo), favorecido por umidade alta e pouco ar','Reveja ventilação e retire folhas muito afetadas'],
+'Planta esticada e fina':['Pouca luz','Luz longe demais ou temperatura alta à noite'],
+'Crescimento parado':['Vaso pequeno para a planta','pH ou temperatura fora do ideal','Raízes com problema'],
+'Pontinhos ou teias nas folhas':['Possíveis ácaros ou outras pragas: olhe o verso das folhas com lupa','Isole a planta e registre a ocorrência na aba Plantas']};
+function rDiag(){$('#dgS').innerHTML=Object.keys(DIAG).map(k=>`<button class='chip' data-k='${esc(k)}'>${esc(k)}</button>`).join('');$('#dgS').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{$('#dgS').querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));$('#dgR').innerHTML='<b>Causas comuns</b><ul style="margin:6px 0;padding-left:20px">'+DIAG[b.dataset.k].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p class="muted">Dica: meça pH, temperatura e umidade antes de mudar nutrientes, e mexa em uma coisa de cada vez.</p>'})}
+function applyTheme(){const l=S.cfg.theme==='light';document.documentElement.dataset.theme=l?'light':'';const b=$('#thB');if(b)b.textContent=l?'Tema: claro (trocar para escuro)':'Tema: escuro (trocar para claro)';const m=document.querySelector('meta[name=theme-color]');if(m)m.content=l?'#f4f7f3':'#16181d'}
+applyTheme();$('#thB').onclick=()=>{S.cfg.theme=S.cfg.theme==='light'?'dark':'light';save();applyTheme()};
 let devF='all';
 const CAT={ctl:'Controle',luz:'Luz',exa:'Ar',ven:'Ar',ref:'Ar',umi:'Água',irr:'Água'},LV={luz:'int',exa:'vel',ven:'vel'},COL=['#c8f56a','#22c55e','#f2c14e','#5ec8e5','#e58ad0','#8e98a3','#b69cff'];
 const dv=id=>S.dev[id]||(S.dev[id]={on:false,lvl:100,auto:false});
