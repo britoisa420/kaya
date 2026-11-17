@@ -580,6 +580,12 @@ table.nut tr.cur td{background:rgba(126,217,87,.1)}
 .fog figure{margin:0;border-radius:14px;overflow:hidden;background:rgba(8,16,10,.5);border:1px solid var(--ln)}
 .fog img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
 .fog figcaption{padding:8px 10px;font-size:.85rem}
+.real{margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(242,193,78,.07);border:1px dashed rgba(242,193,78,.4)}
+.real>summary{list-style:none;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.real>summary::-webkit-details-marker{display:none}
+.real>summary .ic{color:var(--hl);width:22px;height:22px;flex:none;margin-top:2px}
+.real>summary span{display:flex;flex-direction:column;gap:2px}
+.real>summary small{color:var(--mu);font-weight:500}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -1449,10 +1455,13 @@ function applyScene(k){
     else{const x=SCN[k].d[q.id]||[0,0,0];d.on=!!x[0];d.lvl=x[1]||100;d.auto=!!x[2]}});
   S.scene=k;save();R();toast('Cena aplicada (simulada).')}
 function rDevs(){const O=own();
-  $('#devs').innerHTML=`<div class='dtiles'>${O.map(q=>{const d=dv(q.id);return `<div class='dtile ${d.on?'on':''}'><button class='dtap' data-tg='${q.id}' aria-pressed='${d.on}' aria-label='${d.on?'Desligar':'Ligar'} ${esc(q.n)}'><span class='eqi'>${EQI[q.id]||EQI.plug}</span><b>${esc(q.n)}</b><small>${devStatus(q)}</small></button><button class='dmore' data-dm='${q.id}' aria-label='Ajustes de ${esc(q.n)}'>${ic('dots')}</button></div>`}).join('')}<button class='dtile add' id='devAdd'><span class='eqi'>+</span><b>Adicionar aparelho</b><small>Sem precisar de modelo</small></button></div>`;
+  $('#devs').innerHTML=`<div class='dtiles'>${O.map(q=>{const d=dv(q.id);return `<div class='dtile ${d.on?'on':''}'><button class='dtap' data-tg='${q.id}' aria-pressed='${d.on}' aria-label='${d.on?'Desligar':'Ligar'} ${esc(q.n)}'><span class='eqi'>${EQI[q.id]||EQI.plug}</span><b>${esc(q.n)}</b><small>${devStatus(q)}</small></button><button class='dmore' data-dm='${q.id}' aria-label='Ajustes de ${esc(q.n)}'>${ic('dots')}</button></div>`}).join('')}<button class='dtile add' id='devAdd'><span class='eqi'>+</span><b>Adicionar aparelho</b><small>Sem precisar de modelo</small></button></div>${typeof lkVia==='function'&&O.some(q=>lkVia(q.id))?'':`<details class='real'><summary>${ic('bolt')}<span><b>Ligar de verdade</b><small>Hoje os aparelhos mudam só no app. Veja o que precisa para ligar na tomada.</small></span></summary>
+<ol class='steps' style='margin-top:12px'><li><b>Compre uma tomada inteligente Wi-Fi</b> que funcione com o app <b>Smart Life</b> ou <b>Tuya</b> (está escrito na caixa ou no anúncio). Para luz, exaustor e ventilador, 10 A. Para aquecedor ou ar-condicionado, 16 ou 20 A. Prefira com medição de energia e selo do Inmetro.</li><li><b>Configure no app Smart Life:</b> ligue a tomada, segure o botão até piscar e toque em + Adicionar dispositivo.</li><li><b>Ligue o aparelho na tomada inteligente</b> e a tomada na parede.</li><li><b>Conecte ao Kaya</b> em Estufa › Conectar › Kaya Ponte. Depois escolha, em "Como cada aparelho liga de verdade", qual tomada é de qual aparelho.</li></ol>
+<p class='muted' style='margin:0 0 4px;font-size:.88rem'>Opcional: um termo-higrômetro Wi-Fi Smart Life mostra a temperatura e a umidade reais na estufa 3D. Placas ESP32/Tasmota também funcionam, por MQTT.</p>
+<div class='row' style='margin-top:8px'><button class='btn ghost sm' id='goConn'>Abrir Conectar</button></div></details>`}`;
   $('#devs').querySelectorAll('[data-tg]').forEach(b=>b.onclick=()=>{const d=dv(b.dataset.tg);d.on=!d.on;d.auto=false;S.scene=null;save();rHome()});
   $('#devs').querySelectorAll('[data-dm]').forEach(b=>b.onclick=()=>devSheet(b.dataset.dm));
-  $('#devAdd').onclick=addDevSheet}
+  $('#devAdd').onclick=addDevSheet;if($('#goConn'))$('#goConn').onclick=()=>{if(isIni()){S.cfg.modo='avan';save();applyMode()}tab(3);sub('E','conectar')}}
 function rConsS(){const st=cstage(ents()),it=kwhDay(st).filter(x=>x.k>0),tot=it.reduce((a,x)=>a+x.k,0);
   $('#consS').innerHTML=it.length?`<div class='row' style='gap:16px;align-items:center'>${donut(it,tot.toFixed(1))}<div style='flex:1;min-width:150px'>${legend(it)}<p style='margin:10px 0 0'><b>${brl(tot*tar())}</b> por dia · ${brl(tot*tar()*30)} em 30 dias <small class='muted'>(fase ${esc(st)})</small></p></div></div>`:`<div class='empty'>Informe a potência (W) e as horas de cada equipamento em Estufa › Equipamentos para ver o consumo.</div>`}
 function rHomePl(){
