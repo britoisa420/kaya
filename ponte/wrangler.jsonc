@@ -1,0 +1,9 @@
+{
+  // Kaya Ponte: servidor gratuito que liga o Kaya às nuvens Tuya, eWeLink e Shelly.
+  "name": "kaya-ponte",
+  "main": "worker.js",
+  "compatibility_date": "2025-09-01",
+  "workers_dev": true,
+  "vars": { "ORIGEM": "https://britoisa420.github.io" },
+  "kv_namespaces": [{ "binding": "KAYA" }]
+}

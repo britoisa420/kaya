@@ -6,7 +6,19 @@ as suas chaves e só obedece ao Kaya que souber a `KAYA_SENHA`.
 
 ESP32, Tasmota e ESPHome não precisam da ponte: o Kaya fala com eles por MQTT (aba Estufa › Conectar).
 
-## Criar a ponte (Cloudflare Workers, plano grátis)
+## Jeito mais fácil: um clique
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/britoisa420/kaya/tree/main/ponte)
+
+1. Clique no botão acima e entre (ou crie) sua conta Cloudflare grátis.
+2. Quando pedir **KAYA_SENHA**, invente uma senha longa. Deixe o resto como está e clique em **Create and deploy**.
+3. No fim aparece o endereço, algo como `https://kaya-ponte.SEU-NOME.workers.dev`.
+4. No Kaya, em Estufa › Conectar › Kaya Ponte, cole o endereço e a senha e toque em Conectar.
+5. Em **Contas das marcas**, cole as chaves da Tuya, Shelly ou eWeLink.
+
+## Jeito manual
+
+### Criar a ponte (Cloudflare Workers, plano grátis)
 
 1. Crie uma conta em https://dash.cloudflare.com e abra **Workers e Pages › Criar › Worker**. Nome: `kaya-ponte`.
 2. **Editar código**: apague o exemplo, cole o conteúdo de `worker.js` e clique em **Implantar**.
