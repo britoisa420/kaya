@@ -545,6 +545,12 @@ label.sw{margin:0;flex:none;display:block}
 .lkrow .eqi .ic{width:20px;height:20px}
 .lkrow .g2{gap:0 8px}
 a.btn{display:inline-flex;align-items:center;text-decoration:none}
+details.adv>summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:2px;font-weight:800;font-size:1.02rem}
+details.adv>summary::-webkit-details-marker{display:none}
+details.adv>summary::after{content:'+ Mostrar';font:700 .8rem var(--fb);color:var(--ac);margin-top:4px}
+details.adv[open]>summary::after{content:'− Esconder'}
+details.adv>summary small{font-weight:500;font-size:.85rem}
+details.adv .panel{margin:12px 0 0;background:rgba(8,16,10,.4)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -623,10 +629,9 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 <div id='eqs'></div>
 </div>
 <div class='sp' data-g='E' data-p='conectar' hidden>
-<div class='panel' id='lkP'></div>
 <div class='panel' id='ptP'></div>
-<div class='panel' id='mqP'></div>
-<div class='panel' id='haP'></div>
+<div class='panel' id='lkP'></div>
+<details class='panel adv' id='advC'><summary>Outras formas de conectar <small class='muted'>MQTT (ESP32, Tasmota) e Home Assistant</small></summary><div class='panel' id='mqP'></div><div class='panel' id='haP'></div></details>
 <div class='panel' id='conX'></div>
 <div class='panel'><div class='row spread'><h3>📷 Câmeras da estufa</h3><span class='fut'>Futuro</span></div>
 <p class='muted' style='margin:6px 0 0'>Cadastre as câmeras que você pretende usar. A imagem ao vivo ainda não aparece no app: por enquanto este painel serve para planejar e para o arquivo de plano.</p>
@@ -1035,7 +1040,7 @@ async function haPoll(){if(!haCfg().on||!HA.ok)return;try{const st=await haReq('
 setInterval(()=>{haPoll()},20000);
 function haLive(k){const x=typeof LIVE!=='undefined'&&LIVE?LIVE[k]:null;return x&&Date.now()-x.at<600000?x.v:null}
 function rHA(){const c=haCfg(),cl=inClaude(),st=cl?['Indisponível aqui','hot']:!c.on?['Desligada','']:HA.ok?['Conectado','']:['Sem conexão','hot'],O=own(),fresh=haLive('t')!==null||haLive('u')!==null;
-  $('#haP').innerHTML=`<div class='row spread'><h3>Conexão direta</h3><span class='pill ${st[1]}'>${st[0]}</span></div><p style='margin:8px 0'>Com o Kaya instalado no seu Home Assistant, os botões, horários, cenas e o assistente ligam as tomadas de verdade, e temperatura e umidade chegam ao vivo dos sensores.</p>
+  $('#haP').innerHTML=`<div class='row spread'><h3>Home Assistant</h3><span class='pill ${st[1]}'>${st[0]}</span></div><p style='margin:8px 0'>Com o Kaya instalado no seu Home Assistant, os botões, horários, cenas e o assistente ligam as tomadas de verdade, e temperatura e umidade chegam ao vivo dos sensores.</p>
   ${cl?`<p class='warn' style='margin:0 0 10px'>Aqui dentro do Claude a página não pode acessar a rede. Instale o Kaya no Home Assistant (passos abaixo) e abra por lá.</p>`:''}
   <div class='g2'><div style='grid-column:1/-1'><label for='haU'>Endereço do Home Assistant</label><input id='haU' inputmode='url' placeholder='http://homeassistant.local:8123' value='${esc(c.url||'')}'></div><div style='grid-column:1/-1'><label for='haK'>Token de acesso</label><input id='haK' type='password' autocomplete='off' placeholder='Cole o token de longa duração' value='${esc(c.token||'')}'></div></div>
   <div class='row' style='margin-top:12px'><button class='btn' id='haGo'>${c.on&&HA.ok?'Testar de novo':'Conectar'}</button>${c.on?`<button class='btn ghost' id='haOff'>Desconectar</button>`:''}</div>
@@ -1151,7 +1156,7 @@ function rLinks(){const lk=$('#lkP'),pp=$('#ptP'),mp=$('#mqP');if(!lk)return;con
   $('#mqGo').onclick=()=>{mc.url=$('#mqU').value.trim();mc.user=$('#mqN').value.trim();mc.pass=$('#mqP2').value;if(/^https?:\/\//.test(mc.url)){const u=mc.url;mc.url='';mc.pass='';save();pc.url=u.replace(/\/+$/,'');save();rLinks();const f=$('#ptU');if(f){f.value=pc.url;f.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>$('#ptS').focus(),400)}return toast('Esse é o endereço da Kaya Ponte. Coloquei no painel certo: agora digite a senha da ponte e toque em Conectar.')}if(!/^wss?:\/\//.test(mc.url))return toast('Use um endereço wss:// do seu servidor MQTT.');mc.on=true;save();$('#mqGo').textContent='Conectando...';mqConnect();setTimeout(()=>{rLinks();if(MQ.ok)toast('MQTT conectado.')},2500)};
   if($('#mqOff'))$('#mqOff').onclick=()=>{mc.on=false;try{MQ.c&&MQ.c.end(true)}catch(e){}MQ.ok=false;save();rLinks()}}
 
-function rConn(){rLinks();rHA();const O=own(),ent=S.cfg.ent=S.cfg.ent||{},E=id=>ent[id]||('switch.kaya_'+id.replace(/^x_/,'x')),sc=O.map(q=>({q,w:schWin(q.id)})).filter(x=>x.w&&x.w.a),rl=S.rules.filter(r=>r.on&&O.some(q=>q.id===r.dev)),Q=id=>ALLEQ().find(q=>q.id===id)||{n:id},mode=S.cfg.cm||'alexa',un=r=>r.s==='t'?' °C':'%';
+function rConn(){const ad=$('#advC');if(ad&&!ad.dataset.init){ad.dataset.init=1;ad.open=!!(mqCfg().on||haCfg().on)}rLinks();rHA();const O=own(),ent=S.cfg.ent=S.cfg.ent||{},E=id=>ent[id]||('switch.kaya_'+id.replace(/^x_/,'x')),sc=O.map(q=>({q,w:schWin(q.id)})).filter(x=>x.w&&x.w.a),rl=S.rules.filter(r=>r.on&&O.some(q=>q.id===r.dev)),Q=id=>ALLEQ().find(q=>q.id===id)||{n:id},mode=S.cfg.cm||'alexa',un=r=>r.s==='t'?' °C':'%';
   const alexa=[...sc.flatMap(({q,w})=>[[`Kaya: ${q.n} liga`,`Horário: todos os dias às ${w.a}`,`Casa inteligente › ${q.n} › Ligar`],[`Kaya: ${q.n} desliga`,`Horário: todos os dias às ${w.b}`,`Casa inteligente › ${q.n} › Desligar`]]),...rl.map(r=>[`Kaya: ${Q(r.dev).n} por ${r.s==='t'?'temperatura':'umidade'}`,`Casa inteligente › sensor de ${r.s==='t'?'temperatura':'umidade'} ${r.op==='>'?'acima de':'abaixo de'} ${r.val}${un(r)}`,`Casa inteligente › ${Q(r.dev).n} › ${r.a==='off'?'Desligar':'Ligar'}`])];
   const tuya=sc.map(({q,w})=>`${q.n}: ligar às ${w.a} e desligar às ${w.b}, todos os dias`);
   const sv2=(e,on)=>e.split('.')[0]+(on?'.turn_on':'.turn_off'),yml='automation:\n'+[...sc.flatMap(({q,w})=>[[q.n+' liga',w.a,1,q.id],[q.n+' desliga',w.b,0,q.id]].map(x=>`  - alias: "Kaya: ${x[0]}"\n    trigger:\n      - platform: time\n        at: "${x[1]}:00"\n    action:\n      - service: ${sv2(E(x[3]),x[2])}\n        target:\n          entity_id: ${E(x[3])}`)),...rl.map(r=>`  - alias: "Kaya: ${Q(r.dev).n} por ${r.s==='t'?'temperatura':'umidade'}"\n    trigger:\n      - platform: numeric_state\n        entity_id: ${r.s==='t'?(ent._t||'sensor.kaya_temperatura'):(ent._u||'sensor.kaya_umidade')}\n        ${r.op==='>'?'above':'below'}: ${r.val}\n    action:\n      - service: ${sv2(E(r.dev),r.a!=='off')}\n        target:\n          entity_id: ${E(r.dev)}`)].join('\n');
