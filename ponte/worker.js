@@ -7,6 +7,9 @@
 //   TUYA_ID, TUYA_SECRET, TUYA_REGIAO (us | eu | cn | in; no Brasil use us)
 //   SHELLY_SERVIDOR (ex.: https://shelly-49-eu.shelly.cloud), SHELLY_CHAVE
 //   EWELINK_APPID, EWELINK_SECRET, EWELINK_REGIAO (us | eu | as) e um KV ligado com o nome KAYA
+//
+// Com o KV KAYA ligado, as chaves das marcas também podem ser salvas pelo próprio Kaya
+// (Estufa › Conectar › Kaya Ponte › Contas das marcas), sem abrir o painel do Cloudflare.
 
 const enc = new TextEncoder();
 const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
@@ -128,6 +131,29 @@ async function ewList(env) {
 }
 const ewCmd = (env, id, ch, on) => ewReq(env, 'POST', '/v2/device/thing/status', { type: 1, id, params: ch === 'x' ? { switch: on ? 'on' : 'off' } : { switches: [{ outlet: +ch, switch: on ? 'on' : 'off' }] } });
 
+// ---------------- configuração (variáveis + chaves salvas pelo app no KV) ----------------
+const CAMPOS = { tuya: { id: 'TUYA_ID', secret: 'TUYA_SECRET', regiao: 'TUYA_REGIAO' }, shelly: { servidor: 'SHELLY_SERVIDOR', chave: 'SHELLY_CHAVE' }, ewelink: { appid: 'EWELINK_APPID', secret: 'EWELINK_SECRET', regiao: 'EWELINK_REGIAO' } };
+async function lerCfg(env) {
+  let kv = {};
+  if (env.KAYA) { try { kv = JSON.parse((await env.KAYA.get('config')) || '{}'); } catch (e) { kv = {}; } }
+  const c = Object.assign({}, env);
+  for (const [m, f] of Object.entries(CAMPOS)) for (const [k, v] of Object.entries(f)) if (kv[m] && kv[m][k]) c[v] = kv[m][k];
+  return c;
+}
+async function salvarCfg(env, body) {
+  if (!env.KAYA) throw new Error('Ligue um KV chamado KAYA na ponte para salvar as chaves pelo app.');
+  let kv = {};
+  try { kv = JSON.parse((await env.KAYA.get('config')) || '{}'); } catch (e) { kv = {}; }
+  for (const [m, f] of Object.entries(CAMPOS)) {
+    if (!body[m]) continue;
+    kv[m] = kv[m] || {};
+    for (const k of Object.keys(f)) if (body[m][k] !== undefined) { const v = String(body[m][k]).trim(); if (v) kv[m][k] = v; else delete kv[m][k]; }
+  }
+  if (body.limpar && CAMPOS[body.limpar]) delete kv[body.limpar];
+  await env.KAYA.put('config', JSON.stringify(kv));
+  if (body.tuya) tuyaTok = null;
+}
+
 // ---------------- servidor ----------------
 const marcas = env => ({ tuya: !!(env.TUYA_ID && env.TUYA_SECRET), shelly: !!(env.SHELLY_SERVIDOR && env.SHELLY_CHAVE), ewelink: !!(env.EWELINK_APPID && env.EWELINK_SECRET) });
 function cors(env) { return { 'Access-Control-Allow-Origin': env.ORIGEM || '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, X-Kaya-Senha', 'Access-Control-Max-Age': '86400', Vary: 'Origin' }; }
@@ -135,7 +161,8 @@ const json = (env, obj, status) => new Response(JSON.stringify(obj), { status: s
 const page = (msg) => new Response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font:18px system-ui;background:#0b120d;color:#eef6ea;padding:24px">' + msg + '</body>', { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, rawEnv) {
+    const env = await lerCfg(rawEnv);
     const url = new URL(req.url), p = url.pathname.replace(/\/+$/, '') || '/';
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env) });
     if (!env.KAYA_SENHA) return json(env, { erro: 'Defina a variável KAYA_SENHA na ponte.' }, 500);
@@ -161,7 +188,12 @@ export default {
     try {
       if (p === '/saude') {
         const m = marcas(env);
-        return json(env, { ok: true, versao: 1, marcas: { tuya: m.tuya, shelly: m.shelly, ewelink: m.ewelink ? ((await ewLoad(env)) ? 'conectado' : 'falta entrar') : false } });
+        return json(env, { ok: true, versao: 2, kv: !!rawEnv.KAYA, marcas: { tuya: m.tuya, shelly: m.shelly, ewelink: m.ewelink ? ((await ewLoad(env)) ? 'conectado' : 'falta entrar') : false } });
+      }
+      if (p === '/config' && req.method === 'POST') {
+        await salvarCfg(rawEnv, await req.json());
+        const m = marcas(await lerCfg(rawEnv));
+        return json(env, { ok: true, marcas: m });
       }
       if (p === '/aparelhos' && req.method === 'GET') {
         const m = marcas(env), out = [], erros = {};

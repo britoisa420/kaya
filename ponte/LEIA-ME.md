@@ -23,10 +23,13 @@ ESP32, Tasmota e ESPHome não precisam da ponte: o Kaya fala com eles por MQTT (
 
 5. No Kaya (Estufa › Conectar › Kaya Ponte), cole o endereço `https://kaya-ponte.SEU-NOME.workers.dev` e a senha.
 
+Com o KV `KAYA` ligado, as chaves das marcas podem ser coladas direto no Kaya, em **Contas das marcas**, em vez das variáveis do passo 4.
+
 ## Endereços da ponte
 
 - `GET /saude`: quais marcas estão configuradas.
 - `GET /aparelhos`: tomadas e sensores de todas as marcas.
+- `POST /config` com as chaves das marcas (o app usa esta rota).
 - `POST /aparelhos/comando` com `{"id":"tuya:ID:switch_1","ligado":true}`.
 
 Todos pedem o cabeçalho `X-Kaya-Senha`. O plano grátis do Cloudflare permite 100 mil pedidos por dia,
