@@ -1596,8 +1596,8 @@ function reorgR(g,k){if(g==='P'&&k==='diag')rDiag();if(g==='P'&&k==='pl'){rCycle
 
 {const _rp=rPlants;rPlants=function(){_rp();try{rArch();rSC();arBtn()}catch(e){console.error(e)}};const _rm=rMain;rMain=function(){_rm();try{arBtn()}catch(e){console.error(e)}};}
 $('#arB').onclick=arToggle;$('#nightB').onclick=nightToggle;$('#nightT').onclick=nightToggle;$('#tourB').onclick=()=>{tab(1);setTimeout(tourStart,300)};applyNight();
-{const _wg=$('#wGo').onclick;$('#wGo').onclick=()=>{_wg();if(S.cfg.user&&S.cfg.user.aceite&&!S.cfg.tour)setTimeout(tourStart,700)}}
-setTimeout(()=>{try{if(S.cfg.user&&S.cfg.user.aceite&&!S.cfg.tour&&$('#welcome').hidden&&!document.getElementById('tour'))tourStart()}catch(e){}},2600);
+
+try{if(S.cfg.user&&S.cfg.user.aceite&&!S.cfg.tour){S.cfg.tour=1;localStorage.setItem('estufa1',JSON.stringify(S))}}catch(e){}
 $('#lgS').onchange=e=>{S.cfg.lang=e.target.value;save();location.reload()};applyLang();$('#wLg').onclick=()=>{S.cfg.lang=S.cfg.lang==='en'?'pt':'en';save();location.reload()};
 let devF='all';
 const CAT={ctl:'Controle',luz:'Luz',exa:'Ar',ven:'Ar',ref:'Ar',umi:'Água',irr:'Água'},LV={luz:'int',exa:'vel',ven:'vel'},COL=['#c8f56a','#22c55e','#f2c14e','#5ec8e5','#e58ad0','#8e98a3','#b69cff'];
@@ -2360,7 +2360,7 @@ const wxOk=()=>!S.cfg.user||/goiania/.test(normC(S.cfg.user.cidade));
 function chkWelcome(){$('#welcome').hidden=!!(S.cfg.user&&S.cfg.user.aceite)}
 $('#wOk').onchange=()=>{$('#wGo').disabled=!$('#wOk').checked;$('#wGIn').disabled=!$('#wOk').checked};
 $('#wGIn').onclick=()=>{if(!$('#wOk').checked)return;$('#wGo').click();gLogin()};
-$('#wGo').onclick=()=>{if(!$('#wOk').checked)return;S.cfg.user={nome:$('#wN').value.trim(),cidade:$('#wC').value.trim(),aceite:today(),v:1};if(!S.cfg.modo)S.cfg.modo='avan';save();R();toast('Tudo pronto. Bom cultivo!')};
+$('#wGo').onclick=()=>{if(!$('#wOk').checked)return;S.cfg.user={nome:$('#wN').value.trim(),cidade:$('#wC').value.trim(),aceite:today(),v:1};if(!S.cfg.modo)S.cfg.modo='avan';const novo=!S.cfg.tour&&!(S.plants||[]).length;S.cfg.tour=1;save();R();toast('Tudo pronto. Bom cultivo!');if(novo)setTimeout(()=>{try{tourStart()}catch(e){}},700)};
 function rUser(){const u=S.cfg.user||{},gp=(S.cfg.g||{}).pic;$('#avatar').textContent=gp?'':u.nome?u.nome.trim()[0].toUpperCase():'K';$('#avatar').style.backgroundImage=gp?'url("'+gp.replace(/["\\]/g,'')+'")':'';if(document.activeElement!==$('#pfN'))$('#pfN').value=u.nome||'';if(document.activeElement!==$('#pfC'))$('#pfC').value=u.cidade||''}
 $('#pfS').onclick=()=>{S.cfg.user=Object.assign({},S.cfg.user,{nome:$('#pfN').value.trim(),cidade:$('#pfC').value.trim(),aceite:(S.cfg.user&&S.cfg.user.aceite)||today(),v:1});save();R();toast('Perfil salvo.')};
 $('#avatar').onclick=()=>{tab(4);sub('M','perfil')};
