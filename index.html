@@ -597,6 +597,19 @@ table.nut tr.cur td{background:rgba(126,217,87,.1)}
 .cyl{display:grid;gap:6px;margin-top:8px}.cyr{display:flex;flex-wrap:wrap;gap:4px 12px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:.85rem}.cyr b{width:100%}.cltip{margin-top:10px}
 .fab.fabc{right:auto;left:max(16px,env(safe-area-inset-left,0px));padding:0;width:56px;font-size:1.5rem;display:flex;align-items:center;justify-content:center}
 .camb{display:flex;flex-direction:column;gap:10px;margin-top:8px}.camb label.btn{justify-content:center;display:flex;align-items:center;gap:8px;margin:0;text-transform:none;letter-spacing:0;font:800 1rem var(--fb);min-height:52px}
+
+/* mobile fixes */
+input,select,textarea{font-size:16px!important}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g2>*{min-width:0}
+@media (max-width:360px){.g2{grid-template-columns:minmax(0,1fr)}}
+main{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
+button,a,label,select,.tile{touch-action:manipulation}
+.sheetbox{max-height:88dvh;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+html,body{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+body.shopen{overflow:hidden}
+.panel a{display:inline-block;padding:6px 0}
+select{text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -829,7 +842,7 @@ const PATCH={
 for(const k in PATCH)Object.assign(REF[k],PATCH[k]);
 S.targets=S.targets||{};S.eq=S.eq||{};S.seeds=S.seeds||[];S.cams=S.cams||[];function ensureS(){S.tents=S.tents||[];S.cura=S.cura||{};S.dry=S.dry||{};S.clones=S.clones||[];S.dev=S.dev||{};S.rules=S.rules||[];S.sim=S.sim||{};S.rlog=S.rlog||[]}ensureS();S.sim={};
 const seedOf=pid=>{const p=S.plants.find(x=>x.id===pid);return p&&S.seeds.find(x=>x.id===p.seedId)};
-const ptype=pid=>{const s=seedOf(pid);return s?s.tipo:'foto'};
+const ptype=pid=>{const s=seedOf(pid);if(s&&s.tipo&&s.tipo!=='nao')return s.tipo;const p=S.plants.find(x=>x.id===pid);return p&&/\bauto(flower|matic|m[aá]tica)?\b/i.test((p.name||'')+' '+(p.v||'')+' '+((s&&s.name)||''))?'auto':(s&&s.tipo)||'foto'};
 const GT={
 'Germinação':'Separe um copo com água, papel toalha e um prato. O ambiente deve ser limpo, escuro e levemente úmido.',
 'Semente aberta':'Quando a raiz sair e virar um brotinho, passe para o substrato. Comece em vasinho ou bandeja pequena, não direto no vaso grande.',
@@ -880,7 +893,7 @@ function hvInfo(p,es){const au=ptype(p.id)==='auto',t=today(),fs=floStart(p.id),
 function guideCard(p,cst,es){
   const t=today(),au=ptype(p.id)==='auto',fd=s=>{const e=es.find(e=>e.s===s);return e&&e.d};let h='';
   const pr=es.filter(e=>e.prob&&!e.ok&&dd(e.d,t)<=14).pop();
-  if(pr)h+=`<div class='gd warnc'><div class='row spread' style='flex-wrap:nowrap'><b>${ic('alert')}${PROB[pr.prob][0]} em ${fmt(pr.d).slice(0,5)}</b><button class='btn ghost sm' data-gok='${pr.id}'>Resolvido</button></div>${pr.n?`<small class='muted'>${esc(pr.n)}</small>`:''}<ol>${PSTEP[pr.prob].map(x=>`<li>${x}</li>`).join('')}</ol></div>`;
+  if(pr)h+=`<div class='gd warnc'><div class='row spread' style='flex-wrap:wrap;gap:8px'><b style='min-width:0;flex:1 1 160px'>${ic('alert')}${PROB[pr.prob][0]} em ${fmt(pr.d).slice(0,5)}</b><button class='btn ghost sm' data-gok='${pr.id}'>Resolvido</button></div>${pr.n?`<small class='muted'>${esc(pr.n)}</small>`:''}<ol>${PSTEP[pr.prob].map(x=>`<li>${x}</li>`).join('')}</ol></div>`;
   if(cst==='Vegetativa'){const dv=dd(fd('Vegetativa')||p.start||t,t)+1;
     if(!au&&dv>=20){const ph=plantH(p),tf=tentFit(p),pj=tf?tf.pj:Math.round(ph.h*1.5);h+=`<div class='gd'><b>${ic('moon')}Hora de virar para 12/12?</b><p>Ela está há ${dv} dias na vegetativa. Fotoperiódicas só florescem quando a luz passa para 12 horas ligada e 12 de escuro total.</p><ol><li>Na floração ela ainda estica: o app estima uns ${pj} cm${tf?`, com folga de ${tf.free} cm na estufa`:''}.</li><li>Mude o timer da luz para 12 h ligada.</li><li>No período escuro, nenhuma luz pode entrar na tenda.</li></ol><button class='btn' data-g='1212'>Virei para 12/12 hoje</button></div>`}
     if(au&&dd(p.start||t,t)>=14)h+=`<div class='gd'><b>${ic('flower')}Já viu os pistilos?</b><p>Automáticas começam a florescer sozinhas, em geral entre 2 e 4 semanas. O sinal são pelinhos brancos onde os galhos encontram o caule.</p><button class='btn' data-g='pist'>Vi os pistilos: começou a floração</button></div>`}
@@ -1455,6 +1468,9 @@ function iosHint(){const ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navi
   v.insertAdjacentHTML('afterbegin',`<div id='iosB' class='rhint' style='margin:0 0 12px'>${ic('save')}<div style='flex:1'><b>Instale no iPhone para não perder nada</b><small>No Safari, toque em Compartilhar (quadrado com seta ⬆) › Adicionar à Tela de Início. Pelo ícone, o Kaya abre em tela cheia e o iPhone não apaga os dados.</small></div><button class='btn ghost sm' id='iosX' aria-label='Fechar aviso'>OK</button></div>`);
   $('#iosX').onclick=()=>{S.cfg.iosOk=1;save();$('#iosB').remove()}}
 try{iosHint()}catch(e){}
+
+document.addEventListener('focusin',e=>{const t=e.target;if(t&&t.tagName==='INPUT'&&t.type==='number'){const v=t.value;t.type='text';t.inputMode=t.step&&+t.step%1===0&&!/\./.test(t.step)?'numeric':'decimal';t.dataset.num=1;t.autocomplete='off';t.value=v}},true);
+document.addEventListener('input',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.num&&t.value.includes(','))t.value=t.value.replace(/,/g,'.')},true);
 $('#lgS').onchange=e=>{S.cfg.lang=e.target.value;save();location.reload()};applyLang();$('#wLg').onclick=()=>{S.cfg.lang=S.cfg.lang==='en'?'pt':'en';save();location.reload()};
 let devF='all';
 const CAT={ctl:'Controle',luz:'Luz',exa:'Ar',ven:'Ar',ref:'Ar',umi:'Água',irr:'Água'},LV={luz:'int',exa:'vel',ven:'vel'},COL=['#c8f56a','#22c55e','#f2c14e','#5ec8e5','#e58ad0','#8e98a3','#b69cff'];
@@ -1962,8 +1978,8 @@ $('#tdAdd').onclick=()=>{const v=$('#tdP').value;let x;
   if(v==='c'){const w=+$('#tdW').value,d=+$('#tdD').value,h=+$('#tdH').value;if(!(w>0&&d>0&&h>0))return toast('Informe largura, profundidade e altura em cm.');x={nome:$('#tdN').value.trim()||'Minha estufa',w,d,h}}
   else{const a=ALLT[+v];x={nome:a[0],w:a[1],d:a[2],h:a[3],cor:/^HOMEbox/.test(a[0])?'branca':'verde'}}
   x.id=uid();x.lo=15;x.st=1.5;x.pot=x.w<=40?3:x.w<=80?7:11;S.tents.push(x);S.tentSel=x.id;S.plants.forEach(p=>{if(!p.tent)p.tent=x.id});save();$('#tdNew').open=false;rTent();rToday();rHome();toast('Estufa adicionada. As plantas sem estufa foram colocadas nela.')};
-function openSheet(k){$('#sheet').hidden=false;shView(k||'menu')}
-function shClose(){$('#sheet').hidden=true}
+function openSheet(k){$('#sheet').hidden=false;document.body.classList.add('shopen');shView(k||'menu')}
+function shClose(){$('#sheet').hidden=true;document.body.classList.remove('shopen')}
 $('#shX').onclick=shClose;$('#sheet').onclick=e=>{if(e.target.id==='sheet')shClose()};
 function shView(k){
   const p=P(),B=$('#shB'),T=$('#shT');
@@ -2078,7 +2094,7 @@ const rPlan=()=>{$('#planTxt').value=JSON.stringify(buildPlan(),null,2)};
 $('#dlPlan').onclick=()=>{rPlan();dl('estufa-plano.json',$('#planTxt').value)};
 $('#cpPlan').onclick=async()=>{rPlan();try{await navigator.clipboard.writeText($('#planTxt').value);toast('Plano copiado.')}catch(e){$('#planTxt').select();try{document.execCommand('copy');toast('Plano copiado.')}catch(x){toast('Selecione o texto e copie manualmente.')}}};
 function rSeeds(){
-  $('#seedList').innerHTML=S.seeds.length?S.seeds.map(x=>{const u=S.plants.filter(p=>p.seedId===x.id).length;return `<div class='entry'><div style='flex:1'><strong>${esc(x.name)}</strong> <small>${x.tipo==='auto'?'Automática':'Fotoperiódica'}${x.sexo==='reg'?' · Regular':x.sexo==='fem'?' · Feminizada':''}${x.gen?' · '+({ind:'Indica',sat:'Sativa',hib:'Híbrida'})[x.gen]:''}</small><div class='muted'>${x.banco?esc(x.banco)+' · ':''}${u} de ${x.qtd||'?'} usada(s)${x.nota?' · '+esc(x.nota):''}</div></div><button class='btn ghost sm' data-del='s:${x.id}'>Apagar</button></div>`}).join(''):`<div class='empty'>Nenhuma semente guardada. As variedades das suas plantas aparecem aqui.</div>`;
+  $('#seedList').innerHTML=S.seeds.length?S.seeds.map(x=>{const u=S.plants.filter(p=>p.seedId===x.id).length;return `<div class='entry'><div style='flex:1'><strong>${esc(x.name)}</strong> <small>${x.tipo==='auto'?'Automática':'Fotoperiódica'}${x.sexo==='reg'?' · Regular':x.sexo==='fem'?' · Feminizada':''}${x.gen?' · '+({ind:'Indica',sat:'Sativa',hib:'Híbrida'})[x.gen]:''}</small><div class='muted'>${x.banco?esc(x.banco)+' · ':''}${x.qtd?u+' de '+x.qtd+' usada(s)':u+' usada(s)'}${x.nota?' · '+esc(x.nota):''}</div></div><button class='btn ghost sm' data-del='s:${x.id}'>Apagar</button></div>`}).join(''):`<div class='empty'>Nenhuma semente guardada. As variedades das suas plantas aparecem aqui.</div>`;
   const cv=$('#pv').value;$('#pv').innerHTML=S.seeds.map(x=>`<option value='${x.id}'>${esc(x.name)} · ${x.tipo==='auto'?'automática':'fotoperiódica'}</option>`).join('')+`<option value='new'>+ Nova variedade</option>`;$('#pv').value=cv&&[...$('#pv').options].some(o=>o.value===cv)?cv:(S.seeds.length?S.seeds[S.seeds.length-1].id:'new');
   $('#pvNew').hidden=$('#pvH').hidden=$('#pv').value!=='new';$('#pv').onchange=()=>{$('#pvNew').hidden=$('#pvH').hidden=$('#pv').value!=='new'};$('#pf').onchange=()=>{$('#pfdW').hidden=$('#pf').value==='Germinação'};
 }
